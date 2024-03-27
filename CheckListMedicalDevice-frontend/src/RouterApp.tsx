@@ -7,9 +7,11 @@ import { AuthContext } from './contexts/AuthContext'
 import { Box } from '@mui/material'
 import DevicePage from './pages/Dashboard/DevicePage'
 import CheckList from './pages/Dashboard/ChekList'
-import UserPages from './pages/Dashboard/UserPages'
+import UserPages from './pages/Dashboard/users/UserPages'
 import DashboardPage from './pages/Dashboard/DashboardPage'
 import LoginPage from './pages/LoginPage'
+import UserRegister from './pages/Dashboard/users/UserRegisterPage'
+import UserEditPage from './pages/Dashboard/users/UserEditPage'
 
 
 
@@ -54,7 +56,12 @@ const RouterApp = (props: Props) => {
               <Route path="/checklist" element={<CheckList />} />
               <Route path="/users" element={<UserPages />} />
               {user.isOwner ? (
-                <Route path="/dashboard" element={<Dashboard />} />
+                <>
+                <Route path="/dashboard" element={<Dashboard />} /> 
+                <Route path="/register" element={<UserRegister />} />
+                <Route path="/edituser" element={<UserEditPage />} />
+
+                </>
               ) : (
                 undefined
               )}
@@ -67,6 +74,7 @@ const RouterApp = (props: Props) => {
           )}
           {user && user.isOwner && (
             <Route path="*" element={<Navigate to="/dashboard" />} />
+            
           )}
           {user && !user.isOwner && (
   <Route path="*" element={<Navigate to="/home" />} />
