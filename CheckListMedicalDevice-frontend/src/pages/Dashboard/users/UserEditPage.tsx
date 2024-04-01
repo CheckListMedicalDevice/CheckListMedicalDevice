@@ -1,228 +1,96 @@
-import {
-  Container,
-  CssBaseline,
-  Box,
-  Avatar,
-  Typography,
-  Grid,
-  TextField,
-  Button,
-} from "@mui/material";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { NavigateFunction, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import { axiosInstance } from "../../../axiosRequest";
-import NavbarDashboard from "../../../components/NavDashboard";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import axios from "axios";
 import { useParams } from 'react-router-dom';
 import { IUser } from "../../../interfaces/user.interface";
+import NavbarDashboard from "../../../components/NavDashboard";
+import { axiosInstance } from "../../../axiosRequest";
+
+interface FormValues {
+  firstName: string;
+  lastName: string;
+  username: string;
+  password: string;
+  email: string;
+  address: string;
+  phoneNumber: string;
+}
 
 
-type Props = {};
-
-const UserEditPage = (props: Props) => {
-  const [message, setMessage] = useState<string>();
-  const [user,setUser] = useState<IUser>();
+const UserEditPage = () => {
   const { id } = useParams();
+  const [user, setUser] = useState<IUser>();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    const fetchStoreData = async () => {
+    const fetchUserData = async () => {
       try {
         const response = await axiosInstance.get<IUser>(`/users/${id}`);
         setUser(response.data);
-        console.log(response.data);
       } catch (error) {
         console.log(error);
       }
     };
-    fetchStoreData();
-  },[])
+    fetchUserData();
+  }, [id]);
 
-  const navigate: NavigateFunction = useNavigate();
-  
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-
-    if ((data.get("firstName")! as string).length < 4) {
-      setTimeout(() => setMessage(undefined), 3000);
-      setMessage("Password must be at least 8 characters");
-      return;
-    }
-    if ((data.get("lastName")! as string).length < 4) {
-      setTimeout(() => setMessage(undefined), 3000);
-      setMessage("Password must be at least 8 characters");
-      return;
-    }
-    if ((data.get("username")! as string).length < 4) {
-      setMessage("Username must be at least 4 characters");
-      setTimeout(() => setMessage(undefined), 3000);
-      return;
-    }
-    if ((data.get("password")! as string).length < 8) {
-      setMessage("Password must be at least 8 characters");
-      setTimeout(() => setMessage(undefined), 3000);
-      return;
-    }
-    if ((data.get("email")! as string).length < 4) {
-      setTimeout(() => setMessage(undefined), 3000);
-      setMessage("Password must be at least 8 characters");
-      return;
-    }
-    if ((data.get("address")! as string).length < 4) {
-      setTimeout(() => setMessage(undefined), 3000);
-      setMessage("Password must be at least 8 characters");
-      return;
-    }
-    if ((data.get("phoneNumber")! as string).length < 4) {
-      setTimeout(() => setMessage(undefined), 3000);
-      setMessage("Password must be at least 8 characters");
-      return;
-    }
+  const handleSubmit = async (values: FormValues) => {
     try {
-      await axiosInstance.put(`/users/${id}`, {
-        firstName: data.get("firstName")! as string,
-        lastName: data.get("lastName")! as string,
-        username: data.get("username")! as string,
-        hashPassword: data.get("password")! as string,
-        email: data.get("email")! as string,
-        address: data.get("address")! as string,
-        phoneNumber: data.get("phoneNumber")! as string,
-      });
-     
-      navigate("/users/");
+      setIsSubmitting(true);
+      await axiosInstance.put(`/users/${id}`, values);
+      // Show dialog or modal here
+      alert("User updated successfully!");
+      // Redirect to /users/:id
+      window.location.href = `/users/`;
     } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
-        setMessage(error.response.data.message);
-        setTimeout(() => setMessage(undefined), 3000);
-      }
+      console.log(error);
     }
+    setIsSubmitting(false);
   };
-  return (
-    <>
-      <NavbarDashboard>
-        <Container component="main" maxWidth="xs">
-          <CssBaseline />
-          <Box
-            sx={{
-              marginTop: 8,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}></Avatar>
-            <Typography component="h1" variant="h5">
-              Edit
-            </Typography>
-            <Box
-              component="form"
-              noValidate
-              onSubmit={handleSubmit}
-              sx={{ mt: 3 }}
-            >
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    autoComplete="given-name"
-                    name="firstName"
-                    required
-                    fullWidth
-                    id="firstName"
-                    label="First Name"
-                    autoFocus
-                    value={user?.firstName}
-                    onChange={(e) => setUser(prevState => ({ ...(prevState as IUser), firstName: e.target.value }))
-                  }
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="lastName"
-                    label="Last Name"
-                    name="lastName"
-                    autoComplete="family-name"
-                    value={user?.lastName}
-                    onChange={(e) => setUser(prevState => ({ ...(prevState as IUser), lastName: e.target.value }))}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="username"
-                    label="username"
-                    name="username"
-                    autoComplete="username"
-                    value={user?.username}
-                    onChange={(e) => setUser(prevState => ({ ...(prevState as IUser), username: e.target.value }))}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    name="hashPassword"
-                    label="Password"
-                    type="password"
-                    id="hashPassword"
-                    autoComplete="new-password"
 
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="email"
-                    label="Email Address"
-                    name="email"
-                    autoComplete="email"
-                    value={user?.email}
-                    onChange={(e) => setUser(prevState => ({ ...(prevState as IUser), email: e.target.value }))}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="address"
-                    label="Address"
-                    name="address"
-                    autoComplete="address"
-                    value={user?.address}
-                    onChange={(e) => setUser(prevState => ({ ...(prevState as IUser), address: e.target.value }))}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="phoneNumber"
-                    label="phoneNumber"
-                    name="phoneNumber"
-                    autoComplete="phoneNumber"
-                    value={user?.phoneNumber}
-                    onChange={(e) => setUser(prevState => ({ ...(prevState as IUser), phoneNumber: e.target.value }))}
-                  />
-                </Grid>
-              </Grid>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
-                Edit
-              </Button>
-            </Box>
-          </Box>
-        </Container>
-      </NavbarDashboard>
-    </>
+  return (
+    <NavbarDashboard>
+      <Formik
+        initialValues={{
+          firstName: user?.firstName || "",
+          lastName: user?.lastName || "",
+          username: user?.username || "",
+          password: "",
+          email: user?.email || "",
+          address: user?.address || "",
+          phoneNumber: user?.phoneNumber || "",
+        }}
+        validationSchema={Yup.object({
+          firstName: Yup.string().required("Required"),
+          lastName: Yup.string().required("Required"),
+          username: Yup.string().required("Required"),
+          password: Yup.string().min(8, "Must be at least 8 characters").required("Required"),
+          email: Yup.string().email("Invalid email address").required("Required"),
+          address: Yup.string().required("Required"),
+          phoneNumber: Yup.string().required("Required"),
+        })}
+        onSubmit={(values) => handleSubmit(values)}
+      >
+        <Form>
+          <Field name="firstName" type="text" placeholder="First Name" />
+          <ErrorMessage name="firstName" component="div" />
+          <Field name="lastName" type="text" placeholder="Last Name" />
+          <ErrorMessage name="lastName" component="div" />
+          <Field name="username" type="text" placeholder="Username" />
+          <ErrorMessage name="username" component="div" />
+          <Field name="password" type="password" placeholder="Password" />
+          <ErrorMessage name="password" component="div" />
+          <Field name="email" type="email" placeholder="Email Address" />
+          <ErrorMessage name="email" component="div" />
+          <Field name="address" type="text" placeholder="Address" />
+          <ErrorMessage name="address" component="div" />
+          <Field name="phoneNumber" type="text" placeholder="Phone Number" />
+          <ErrorMessage name="phoneNumber" component="div" />
+          <button type="submit" disabled={isSubmitting}>Submit</button>
+        </Form>
+      </Formik>
+    </NavbarDashboard>
   );
 };
 
