@@ -10,12 +10,6 @@ exports.User = database_1.sequelize.define("users", {
         autoIncrement: true,
         field: "id",
     },
-    // imagePath: {
-    //   type: DataTypes.STRING,
-    //   allowNull: true,
-    //   defaultValue: "",
-    //   field: "imagePath",
-    // },
     firstName: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: true,
@@ -56,21 +50,9 @@ exports.User = database_1.sequelize.define("users", {
         defaultValue: "",
         field: "phoneNumber",
     },
-    isOwner: {
+    isAdmin: {
         type: sequelize_1.DataTypes.BOOLEAN,
         allowNull: true,
-        field: "isOwner",
-    },
-    landId: {
-        type: sequelize_1.DataTypes.INTEGER || null,
-        allowNull: true,
-        defaultValue: null,
-        field: "landId",
-    },
-    storeId: {
-        type: sequelize_1.DataTypes.INTEGER || null,
-        allowNull: true,
-        defaultValue: null,
-        field: "storeId",
+        field: "isAdmin",
     },
 });

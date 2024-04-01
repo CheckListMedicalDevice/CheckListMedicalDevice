@@ -39,7 +39,7 @@ const register = async (req: Request, res: Response) => {
       });
     }
     const hashPassword: string = await bcrypt.hash(password, 10);
-    const isOwner: boolean = true;
+    const isAdmin: boolean = true;
     const data = {
       firstName,
       lastName,
@@ -48,7 +48,7 @@ const register = async (req: Request, res: Response) => {
       email,
       address,
       phoneNumber,
-      isOwner,
+      isAdmin,
     };
     const userCreate: Model<IUser> | null = await User.create({
       ...data,
@@ -159,7 +159,6 @@ const getUsers = async (req: RequestAndUser, res: Response) => {
     const offset = (Number(page) - 1) * Number(perPage);
     const findUsersByLand: Model<IUser>[] | null = await User.findAll({
       where: {
-        landId: user.landId,
         id: { [Op.ne]: user.id },
       },
       attributes: { exclude: ["hashPassword"] },

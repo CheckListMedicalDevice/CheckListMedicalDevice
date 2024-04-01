@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from "express";
 
 export interface IUser {
   id: number;
-  imagePath?: string;
   firstName: string;
   lastName: string;
   username: string;
@@ -10,9 +9,7 @@ export interface IUser {
   email: string;
   address: string;
   phoneNumber: string;
-  isOwner: boolean;
-  landId: number | null;
-  storeId: number | null;
+  isAdmin: boolean;
   createAt: Date;
 }
 

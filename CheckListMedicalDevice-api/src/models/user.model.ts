@@ -8,12 +8,6 @@ export const User = sequelize.define("users", {
     autoIncrement: true,
     field: "id",
   },
-  // imagePath: {
-  //   type: DataTypes.STRING,
-  //   allowNull: true,
-  //   defaultValue: "",
-  //   field: "imagePath",
-  // },
   firstName: {
     type: DataTypes.STRING,
     allowNull: true,
@@ -54,21 +48,10 @@ export const User = sequelize.define("users", {
     defaultValue: "",
     field: "phoneNumber",
   },
-  isOwner: {
+  isAdmin: {
     type: DataTypes.BOOLEAN,
     allowNull: true,
-    field: "isOwner",
+    field: "isAdmin",
   },
-  landId: {
-    type: DataTypes.INTEGER || null,
-    allowNull: true,
-    defaultValue: null,
-    field: "landId",
-  },
-  storeId: {
-    type: DataTypes.INTEGER || null,
-    allowNull: true,
-    defaultValue: null,
-    field: "storeId",
-  },
+  
 });

@@ -31,7 +31,7 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             });
         }
         const hashPassword = yield bcrypt_1.default.hash(password, 10);
-        const isOwner = true;
+        const isAdmin = true;
         const data = {
             firstName,
             lastName,
@@ -40,7 +40,7 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             email,
             address,
             phoneNumber,
-            isOwner,
+            isAdmin,
         };
         const userCreate = yield user_model_1.User.create(Object.assign({}, data));
         if (!userCreate) {
@@ -116,7 +116,6 @@ const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const offset = (Number(page) - 1) * Number(perPage);
         const findUsersByLand = yield user_model_1.User.findAll({
             where: {
-                landId: user.landId,
                 id: { [sequelize_1.Op.ne]: user.id },
             },
             attributes: { exclude: ["hashPassword"] },
