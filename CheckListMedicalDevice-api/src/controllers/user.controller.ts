@@ -13,7 +13,6 @@ dotenv.config();
 const register = async (req: Request, res: Response) => {
   try {
     const {
-      // imagePath,
       firstName,
       lastName,
       username,
@@ -22,7 +21,6 @@ const register = async (req: Request, res: Response) => {
       address,
       phoneNumber,
     }: {
-      // imagePath?: string;
       firstName?: string;
       lastName?: string;
       username: string;
@@ -43,7 +41,6 @@ const register = async (req: Request, res: Response) => {
     const hashPassword: string = await bcrypt.hash(password, 10);
     const isOwner: boolean = true;
     const data = {
-      // imagePath: imagePath ? imagePath : "",
       firstName,
       lastName,
       username,
@@ -126,14 +123,12 @@ const self = async (req: RequestAndUser, res: Response) => {
 const updateSelf = async (req: RequestAndUser, res: Response) => {
   const user: IUser = req.user!;
   const {
-    imagePath,
     firstName,
     lastName,
     email,
     address,
     phoneNumber,
   }: {
-    imagePath?: string;
     firstName?: string;
     lastName?: string;
     email?: string;
@@ -143,7 +138,6 @@ const updateSelf = async (req: RequestAndUser, res: Response) => {
 
   const updateUser: any = await User.update(
     {
-      imagePath,
       firstName,
       lastName,
       email,
@@ -199,45 +193,12 @@ const getUserById = async (req: RequestAndUser, res: Response) => {
   }
 };
 
-const getUserByStoreId = async (req: RequestAndUser, res: Response) => {
-  try {
-    const user: IUser = req.user!;
-    const { id } = req.params;
-    const findUserByStoreId: Model<IUser>[] | null = await User.findAll({
-      where: {
-        storeId: id,
-      },
-      attributes: { exclude: ["hashPassword"] },
-    });
-    return res.status(200).json(findUserByStoreId);
-  } catch (error) {
-    return res.status(500).json({ message: "Something went wrong" });
-  }
-};
-
 const updateUser = async (req: RequestAndUser, res: Response) => {
   try {
-    const {
-      id,
-      imagePath,
-      firstName,
-      lastName,
-      email,
-      address,
-      phoneNumber,
-    }: {
-      id: number;
-      imagePath?: string;
-      firstName?: string;
-      lastName?: string;
-      email?: string;
-      address?: string;
-      phoneNumber?: string;
-    } = req.body;
-
+    const { id } = req.params;
+    const { firstName, lastName, email, address, phoneNumber } = req.body;
     const updateUser: any = await User.update(
       {
-        imagePath,
         firstName,
         lastName,
         email,
@@ -246,14 +207,37 @@ const updateUser = async (req: RequestAndUser, res: Response) => {
       },
       {
         where: {
-          id: id,
+          id,
         },
       }
     );
-    if (!updateUser) {
-      return res.status(404).json({ message: "Fail to update" });
-    }
+
+    console.log(updateUser);
+    // if (!updateUser) {
+    //   return res.status(404).json({ message: "Fail to update" });
+    // }
     return res.status(200).json({ message: "Update success" });
+  } catch (error) {
+    return res.status(500).json({ message: "Something went wrong" });
+  }
+};
+
+const deleteUser = async (req: RequestAndUser, res: Response) => {
+  try {
+    const { id } = req.params;
+    const user: IUser = req.user!;
+
+    const deletedUser: null | Model<IUser> = await User.findOne({
+      where: { id },
+    });
+
+    if (!deletedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    await deletedUser.destroy();
+
+    return res.status(200).json({ message: "User deleted successfully" });
   } catch (error) {
     return res.status(500).json({ message: "Something went wrong" });
   }
@@ -266,6 +250,6 @@ export default {
   updateSelf,
   getUsers,
   getUserById,
-  getUserByStoreId,
   updateUser,
+  deleteUser,
 };

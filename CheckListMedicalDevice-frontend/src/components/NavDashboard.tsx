@@ -23,6 +23,7 @@ const drawerWidth = 240;
 
 export default function NavbarDashboard({ children }: { children: ReactNode }) {
   const { user, removeUser } = useContext(AuthContext);
+  
   const logout = () => {
     removeUser();
     const navigate: NavigateFunction = useNavigate();

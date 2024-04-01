@@ -7,11 +7,20 @@ const router = Router();
 router.post("/register", userController.register);
 router.post("/login", userController.login);
 router.get("/self", authMiddleware.authenticateToken, userController.self);
+
 router.put(
   "/self",
   authMiddleware.authenticateToken,
   userController.updateSelf
 );
+
+router.put(
+  "/:id",
+  authMiddleware.authenticateToken,
+  accessPermissionMiddleware.accessPermission,
+  userController.updateUser
+);
+
 router.get(
   "/",
   authMiddleware.authenticateToken,
@@ -31,11 +40,13 @@ router.get(
 // )
 
 //for owner edit child 
-router.put(
-  "/",
-  authMiddleware.authenticateToken,
-  // accessPermissionMiddleware.accessPermission,
-  userController.updateUser
-);
+
+router.delete(
+  "/:id", 
+  authMiddleware.authenticateToken, 
+  accessPermissionMiddleware.accessPermission, 
+  userController.deleteUser
+  );
+
 
 export default router;

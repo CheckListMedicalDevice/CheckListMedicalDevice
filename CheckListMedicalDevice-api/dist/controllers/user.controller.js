@@ -21,9 +21,7 @@ const user_model_1 = require("../models/user.model");
 dotenv_1.default.config();
 const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { 
-        // imagePath,
-        firstName, lastName, username, password, email, address, phoneNumber, } = req.body;
+        const { firstName, lastName, username, password, email, address, phoneNumber, } = req.body;
         const exitUser = yield user_model_1.User.findOne({
             where: { username },
         });
@@ -35,7 +33,6 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const hashPassword = yield bcrypt_1.default.hash(password, 10);
         const isOwner = true;
         const data = {
-            // imagePath: imagePath ? imagePath : "",
             firstName,
             lastName,
             username,
@@ -99,9 +96,8 @@ const self = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 const updateSelf = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = req.user;
-    const { imagePath, firstName, lastName, email, address, phoneNumber, } = req.body;
+    const { firstName, lastName, email, address, phoneNumber, } = req.body;
     const updateUser = yield user_model_1.User.update({
-        imagePath,
         firstName,
         lastName,
         email,
@@ -154,27 +150,11 @@ const getUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         return res.status(500).json({ message: "Something went wrong" });
     }
 });
-const getUserByStoreId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const user = req.user;
-        const { id } = req.params;
-        const findUserByStoreId = yield user_model_1.User.findAll({
-            where: {
-                storeId: id,
-            },
-            attributes: { exclude: ["hashPassword"] },
-        });
-        return res.status(200).json(findUserByStoreId);
-    }
-    catch (error) {
-        return res.status(500).json({ message: "Something went wrong" });
-    }
-});
 const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { id, imagePath, firstName, lastName, email, address, phoneNumber, } = req.body;
+        const { id } = req.params;
+        const { firstName, lastName, email, address, phoneNumber } = req.body;
         const updateUser = yield user_model_1.User.update({
-            imagePath,
             firstName,
             lastName,
             email,
@@ -182,13 +162,31 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             phoneNumber,
         }, {
             where: {
-                id: id,
+                id,
             },
         });
-        if (!updateUser) {
-            return res.status(404).json({ message: "Fail to update" });
-        }
+        console.log(updateUser);
+        // if (!updateUser) {
+        //   return res.status(404).json({ message: "Fail to update" });
+        // }
         return res.status(200).json({ message: "Update success" });
+    }
+    catch (error) {
+        return res.status(500).json({ message: "Something went wrong" });
+    }
+});
+const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = req.params;
+        const user = req.user;
+        const deletedUser = yield user_model_1.User.findOne({
+            where: { id },
+        });
+        if (!deletedUser) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        yield deletedUser.destroy();
+        return res.status(200).json({ message: "User deleted successfully" });
     }
     catch (error) {
         return res.status(500).json({ message: "Something went wrong" });
@@ -201,6 +199,6 @@ exports.default = {
     updateSelf,
     getUsers,
     getUserById,
-    getUserByStoreId,
     updateUser,
+    deleteUser,
 };

@@ -9,7 +9,3 @@ export const sequelize = new Sequelize({
   password: process.env.MYSQL_PASSWORD!,
   database: process.env.MYSQL_DATABASE!,
 });
-
-
-
-

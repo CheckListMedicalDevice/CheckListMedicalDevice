@@ -1,17 +1,45 @@
-import { Container, CssBaseline, Box, Avatar, Typography, Grid, TextField, Button } from '@mui/material';
-import axios from 'axios';
-import React, { useState } from 'react'
-import { NavigateFunction, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { axiosInstance } from '../../../axiosRequest';
-import NavbarDashboard from '../../../components/NavDashboard';
+import {
+  Container,
+  CssBaseline,
+  Box,
+  Avatar,
+  Typography,
+  Grid,
+  TextField,
+  Button,
+} from "@mui/material";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { NavigateFunction, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { axiosInstance } from "../../../axiosRequest";
+import NavbarDashboard from "../../../components/NavDashboard";
+import { useParams } from 'react-router-dom';
+import { IUser } from "../../../interfaces/user.interface";
 
-type Props = {}
+
+type Props = {};
 
 const UserEditPage = (props: Props) => {
+  const [message, setMessage] = useState<string>();
+  const [user,setUser] = useState<IUser>();
+  const { id } = useParams();
 
-    const [message, setMessage] = useState<string>();
+  useEffect(() => {
+    const fetchStoreData = async () => {
+      try {
+        const response = await axiosInstance.get<IUser>(`/users/${id}`);
+        setUser(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchStoreData();
+  },[])
+
   const navigate: NavigateFunction = useNavigate();
+  
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -38,7 +66,6 @@ const UserEditPage = (props: Props) => {
       return;
     }
     if ((data.get("email")! as string).length < 4) {
-     
       setTimeout(() => setMessage(undefined), 3000);
       setMessage("Password must be at least 8 characters");
       return;
@@ -54,147 +81,149 @@ const UserEditPage = (props: Props) => {
       return;
     }
     try {
-      await axiosInstance.post("/users/register/", {
+      await axiosInstance.put(`/users/${id}`, {
         firstName: data.get("firstName")! as string,
         lastName: data.get("lastName")! as string,
         username: data.get("username")! as string,
-        password: data.get("password")! as string,
+        hashPassword: data.get("password")! as string,
         email: data.get("email")! as string,
         address: data.get("address")! as string,
         phoneNumber: data.get("phoneNumber")! as string,
       });
-      toast.success('Registration successful');
+     
       navigate("/users/");
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         setMessage(error.response.data.message);
         setTimeout(() => setMessage(undefined), 3000);
       }
-      toast.error("Failed to register");
     }
   };
   return (
     <>
-    <NavbarDashboard>
-    
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <Box
-        sx={{
-          marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-          
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign up
-        </Typography>
-        <Box component="form" noValidate onSubmit={handleSubmit}  sx={{ mt: 3 }}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="given-name"
-                name="firstName"
-                required
-                fullWidth
-                id="firstName"
-                label="First Name"
-                autoFocus
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="family-name"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                id="username"
-                label="username"
-                name="username"
-                autoComplete="username"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="new-password"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                id="address"
-                label="Address"
-                name="address"
-                autoComplete="address"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                id="phoneNumber"
-                label="phoneNumber"
-                name="phoneNumber"
-                autoComplete="phoneNumber"
-              />
-            </Grid>
-            {/* <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                id="role"
-                label="role"
-                name="role"
-                autoComplete="role"
-              />
-            </Grid> */}
-          
-          </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
+      <NavbarDashboard>
+        <Container component="main" maxWidth="xs">
+          <CssBaseline />
+          <Box
+            sx={{
+              marginTop: 8,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
           >
-            Sign Up
-          </Button>
-        </Box>
-      </Box>
+            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}></Avatar>
+            <Typography component="h1" variant="h5">
+              Edit
+            </Typography>
+            <Box
+              component="form"
+              noValidate
+              onSubmit={handleSubmit}
+              sx={{ mt: 3 }}
+            >
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    autoComplete="given-name"
+                    name="firstName"
+                    required
+                    fullWidth
+                    id="firstName"
+                    label="First Name"
+                    autoFocus
+                    value={user?.firstName}
+                    onChange={(e) => setUser(prevState => ({ ...(prevState as IUser), firstName: e.target.value }))
+                  }
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    required
+                    fullWidth
+                    id="lastName"
+                    label="Last Name"
+                    name="lastName"
+                    autoComplete="family-name"
+                    value={user?.lastName}
+                    onChange={(e) => setUser(prevState => ({ ...(prevState as IUser), lastName: e.target.value }))}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    id="username"
+                    label="username"
+                    name="username"
+                    autoComplete="username"
+                    value={user?.username}
+                    onChange={(e) => setUser(prevState => ({ ...(prevState as IUser), username: e.target.value }))}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    name="hashPassword"
+                    label="Password"
+                    type="password"
+                    id="hashPassword"
+                    autoComplete="new-password"
 
-    </Container>
-
-        </NavbarDashboard>
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    id="email"
+                    label="Email Address"
+                    name="email"
+                    autoComplete="email"
+                    value={user?.email}
+                    onChange={(e) => setUser(prevState => ({ ...(prevState as IUser), email: e.target.value }))}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    id="address"
+                    label="Address"
+                    name="address"
+                    autoComplete="address"
+                    value={user?.address}
+                    onChange={(e) => setUser(prevState => ({ ...(prevState as IUser), address: e.target.value }))}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    id="phoneNumber"
+                    label="phoneNumber"
+                    name="phoneNumber"
+                    autoComplete="phoneNumber"
+                    value={user?.phoneNumber}
+                    onChange={(e) => setUser(prevState => ({ ...(prevState as IUser), phoneNumber: e.target.value }))}
+                  />
+                </Grid>
+              </Grid>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Edit
+              </Button>
+            </Box>
+          </Box>
+        </Container>
+      </NavbarDashboard>
     </>
-  )
-}
+  );
+};
 
-export default UserEditPage
+export default UserEditPage;
