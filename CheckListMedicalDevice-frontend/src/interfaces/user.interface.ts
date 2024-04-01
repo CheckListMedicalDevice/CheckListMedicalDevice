@@ -8,7 +8,7 @@ export interface IUser {
   email: string;
   address: string;
   phoneNumber: string;
-  isOwner: boolean;
+  isAdmin: boolean;
   landId: number | null;
   storeId: number | null;
   createAt: Date;

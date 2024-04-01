@@ -47,7 +47,7 @@ const RouterApp = (props: Props) => {
         <Routes>
           {user ? (
             <>
-              {user.isOwner ? (
+              {user.isAdmin ? (
                 <>
                   <Route path="/home" element={<HomePages />} />
                   <Route path="/device" element={<DevicePage />} />
@@ -65,10 +65,10 @@ const RouterApp = (props: Props) => {
               <Route path="*" element={<Navigate to="/login" />} />
             </>
           )}
-          {user && user.isOwner && (
+          {user && user.isAdmin && (
             <Route path="*" element={<Navigate to="/dashboard" />} />
           )}
-          {user && !user.isOwner && (
+          {user && !user.isAdmin && (
             <Route path="*" element={<Navigate to="/home" />} />
           )}
         </Routes>
