@@ -13,8 +13,8 @@ const accessPermission = async (
 ) => {
   try {
     const user = req.user!;
-    if (user.isOwner !== true) {
-      return res.status(400).json({ message: "This service for owner" });
+    if (user.isAdmin !== true) {
+      return res.status(400).json({ message: "This service for admin" });
     }
 
     next();

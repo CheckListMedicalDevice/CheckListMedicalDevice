@@ -96,7 +96,7 @@ export default function NavbarDashboard({ children }: { children: ReactNode }) {
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3, }}>
         <Toolbar />
-        {children} {/* Render children here */}
+        {children} 
       </Box>
     </Box>
   );

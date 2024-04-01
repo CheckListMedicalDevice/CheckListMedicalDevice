@@ -17,8 +17,8 @@ dotenv_1.default.config();
 const accessPermission = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const user = req.user;
-        if (user.isOwner !== true) {
-            return res.status(400).json({ message: "This service for owner" });
+        if (user.isAdmin !== true) {
+            return res.status(400).json({ message: "This service for admin" });
         }
         next();
     }

@@ -123,12 +123,15 @@ const self = async (req: RequestAndUser, res: Response) => {
 const updateSelf = async (req: RequestAndUser, res: Response) => {
   const user: IUser = req.user!;
   const {
+    
     firstName,
     lastName,
+    username,
     email,
     address,
     phoneNumber,
   }: {
+    username?: string;
     firstName?: string;
     lastName?: string;
     email?: string;
@@ -195,9 +198,10 @@ const getUserById = async (req: RequestAndUser, res: Response) => {
 const updateUser = async (req: RequestAndUser, res: Response) => {
   try {
     const { id } = req.params;
-    const { firstName, lastName, email, address, phoneNumber } = req.body;
+    const { firstName, lastName, email, address, phoneNumber,username } = req.body;
     const updateUser: any = await User.update(
       {
+        username,
         firstName,
         lastName,
         email,

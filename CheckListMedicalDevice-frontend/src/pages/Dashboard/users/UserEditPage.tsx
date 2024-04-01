@@ -24,16 +24,18 @@ const UserEditPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await axiosInstance.get<IUser>(`/users/${id}`);
-        setUser(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+    
     fetchUserData();
   }, [id]);
+
+  const fetchUserData = async () => {
+    try {
+      const response = await axiosInstance.get<IUser>(`/users/${id}`);
+      setUser(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -225,23 +227,7 @@ const UserEditPage = () => {
             </Box>
           </Box>
         </Container>
-      {/* <form onSubmit={formik.handleSubmit}>
-        <input name="firstName" type="text" placeholder="First Name" onChange={formik.handleChange} value={formik.values.firstName} />
-        {formik.errors.firstName ? <div>{formik.errors.firstName}</div> : null}
-        <input name="lastName" type="text" placeholder="Last Name" onChange={formik.handleChange} value={formik.values.lastName} />
-        {formik.errors.lastName ? <div>{formik.errors.lastName}</div> : null}
-        <input name="username" type="text" placeholder="Username" onChange={formik.handleChange} value={formik.values.username} />
-        {formik.errors.username ? <div>{formik.errors.username}</div> : null}
-        <input name="password" type="password" placeholder="Password" onChange={formik.handleChange} value={formik.values.password} />
-        {formik.errors.password ? <div>{formik.errors.password}</div> : null}
-        <input name="email" type="email" placeholder="Email Address" onChange={formik.handleChange} value={formik.values.email} />
-        {formik.errors.email ? <div>{formik.errors.email}</div> : null}
-        <input name="address" type="text" placeholder="Address" onChange={formik.handleChange} value={formik.values.address} />
-        {formik.errors.address ? <div>{formik.errors.address}</div> : null}
-        <input name="phoneNumber" type="text" placeholder="Phone Number" onChange={formik.handleChange} value={formik.values.phoneNumber} />
-        {formik.errors.phoneNumber ? <div>{formik.errors.phoneNumber}</div> : null}
-        <button type="submit" disabled={isSubmitting}>Submit</button>
-      </form> */}
+      
     </NavbarDashboard>
   );
 };

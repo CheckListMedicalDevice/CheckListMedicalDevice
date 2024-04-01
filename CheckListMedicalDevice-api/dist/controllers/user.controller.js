@@ -96,7 +96,7 @@ const self = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 const updateSelf = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = req.user;
-    const { firstName, lastName, email, address, phoneNumber, } = req.body;
+    const { firstName, lastName, username, email, address, phoneNumber, } = req.body;
     const updateUser = yield user_model_1.User.update({
         firstName,
         lastName,
@@ -152,8 +152,9 @@ const getUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const { firstName, lastName, email, address, phoneNumber } = req.body;
+        const { firstName, lastName, email, address, phoneNumber, username } = req.body;
         const updateUser = yield user_model_1.User.update({
+            username,
             firstName,
             lastName,
             email,
