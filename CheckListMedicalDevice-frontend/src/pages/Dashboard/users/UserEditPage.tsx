@@ -46,7 +46,7 @@ const UserEditPage = () => {
       phoneNumber: user?.phoneNumber || "",
     },
     validationSchema: Yup.object({
-      firstName: Yup.string().required("Required"),
+      firstName: Yup.string().required("Required "),
       lastName: Yup.string().required("Required"),
       username: Yup.string().required("Required"),
       password: Yup.string().min(8, "Must be at least 8 characters").required("Required"),
@@ -103,7 +103,7 @@ const UserEditPage = () => {
                     autoFocus
                     onChange={formik.handleChange}
                     value={formik.values.firstName}
-                    error={Boolean(formik.errors.firstName)}
+                    
                     helperText={formik.errors.firstName}
                     onBlur={formik.handleBlur}
                     disabled={isSubmitting}
@@ -121,11 +121,10 @@ const UserEditPage = () => {
                     autoComplete="family-name"
                     onChange={formik.handleChange}
                     value={formik.values.lastName}
-                    error={Boolean(formik.errors.lastName)}
+                 
                     helperText={formik.errors.lastName}
                     onBlur={formik.handleBlur}
-                    disabled={isSubmitting}
-
+                    
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -138,11 +137,10 @@ const UserEditPage = () => {
                     autoComplete="username"
                     onChange={formik.handleChange}
                     value={formik.values.username}
-                    error={Boolean(formik.errors.username)}
+                    
                     helperText={formik.errors.username}
                     onBlur={formik.handleBlur}
-                    disabled={isSubmitting}
-
+                    
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -157,10 +155,9 @@ const UserEditPage = () => {
                     onChange={formik.handleChange}
                     value={formik.values.password}
                     helperText={formik.errors.password}
-                    error={Boolean(formik.errors.password)}
+                    
                     onBlur={formik.handleBlur}
-                    disabled={isSubmitting}
-
+                    
 
                     
                   />
@@ -176,10 +173,9 @@ const UserEditPage = () => {
                     onChange={formik.handleChange}
                     value={formik.values.email}
                     helperText={formik.errors.email}
-                    error={Boolean(formik.errors.email)}
+                    
                     onBlur={formik.handleBlur}
-                    disabled={isSubmitting}
-
+                   
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -193,9 +189,9 @@ const UserEditPage = () => {
                     onChange={formik.handleChange}
                     value={formik.values.address}
                     helperText={formik.errors.address}
-                    error={Boolean(formik.errors.address)}
+                    
                     onBlur={formik.handleBlur}
-                    disabled={isSubmitting}
+                   
 
                   />
                 </Grid>
@@ -210,9 +206,9 @@ const UserEditPage = () => {
                     onChange={formik.handleChange}
                     value={formik.values.phoneNumber}
                     helperText={formik.errors.phoneNumber}
-                    error={Boolean(formik.errors.phoneNumber)}
+                    
                     onBlur={formik.handleBlur}
-                    disabled={isSubmitting}
+                    
 
                   />
                 </Grid>
