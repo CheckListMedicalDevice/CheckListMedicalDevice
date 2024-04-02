@@ -1,26 +1,25 @@
-import React, { useEffect, useState } from "react";
-import { ErrorMessage, Field, Formik, useFormik } from "formik";
+import { useEffect, useState } from "react";
+import {  useFormik } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
-import { Form, useParams } from 'react-router-dom';
+import {  useParams } from 'react-router-dom';
 import { IUser } from "../../../interfaces/user.interface";
 import NavbarDashboard from "../../../components/NavDashboard";
 import { axiosInstance } from "../../../axiosRequest";
 import { Container, CssBaseline, Box, Avatar, Typography, Grid, TextField, Button } from "@mui/material";
 
-interface FormValues {
-  firstName: string;
-  lastName: string;
-  username: string;
-  password: string;
-  email: string;
-  address: string;
-  phoneNumber: string;
-}
+// interface FormValues {
+//   firstName: string;
+//   lastName: string;
+//   username: string;
+//   password: string;
+//   email: string;
+//   address: string;
+//   phoneNumber: string;
+// }
 
 const UserEditPage = () => {
   const { id } = useParams();
-  const [user, setUser] = useState<IUser>();
+  
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
@@ -30,39 +29,49 @@ const UserEditPage = () => {
 
   const fetchUserData = async () => {
     try {
-      const response = await axiosInstance.get<IUser>(`/users/${id}`);
-      setUser(response.data);
+      const response = await axiosInstance.get<IUser[]>(`/users/${id}`);
+      const user = response.data[0];
+      formik.setValues({
+        firstName: user.firstName,
+        lastName: user.lastName,
+        username: user.username,
+        email: user.email,
+        address: user.address,
+        phoneNumber: user.phoneNumber,
+        hashPassword:"user"
+      });
     } catch (error) {
       console.log(error);
     }
+    
   };
 
   const formik = useFormik({
     initialValues: {
-      firstName: user?.firstName || "",
-      lastName: user?.lastName || "",
-      username: user?.username || "",
-      password: "",
-      email: user?.email || "",
-      address: user?.address || "",
-      phoneNumber: user?.phoneNumber || "",
+      firstName: "",
+      lastName:  "",
+      username:  "",
+      hashPassword: "",
+      email:  "",
+      address:  "",
+      phoneNumber: "",
     },
     validationSchema: Yup.object({
-      firstName: Yup.string().required("Required "),
-      lastName: Yup.string().required("Required"),
-      username: Yup.string().required("Required"),
-      password: Yup.string().min(8, "Must be at least 8 characters").required("Required"),
-      email: Yup.string().email("Invalid email address").required("Required"),
-      address: Yup.string().required("Required"),
-      phoneNumber: Yup.string().required("Required"),
+      firstName: Yup.string(),
+      lastName: Yup.string(),
+      username: Yup.string(),
+      hashPassword: Yup.string().min(8, "Must be at least 8 characters"),
+      email: Yup.string().email("Invalid email address"),
+      address: Yup.string(),
+      phoneNumber: Yup.string(),
     }),
     onSubmit: async (values) => {
       try {
         setIsSubmitting(true);
         await axiosInstance.put(`/users/${id}`, values);
-        // Show dialog or modal here
+     
         alert("User updated successfully!");
-        // Redirect to /users/:id
+    
         window.location.href = `/users/`;
       } catch (error) {
         console.log(error);
@@ -155,8 +164,8 @@ const UserEditPage = () => {
                     id="password"
                     autoComplete="new-password"
                     onChange={formik.handleChange}
-                    value={formik.values.password}
-                    helperText={formik.errors.password}
+                    value={formik.values.hashPassword}
+                    helperText={formik.errors.hashPassword}
                     
                     onBlur={formik.handleBlur}
                     

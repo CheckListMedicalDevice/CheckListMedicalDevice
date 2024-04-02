@@ -13,6 +13,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import MedicalInformationIcon from '@mui/icons-material/MedicalInformation';
+import FireExtinguisherIcon from '@mui/icons-material/FireExtinguisher';
 import { Link, NavigateFunction, useNavigate } from 'react-router-dom';
 
 import { ReactNode, useContext } from 'react';
@@ -88,6 +89,14 @@ export default function NavbarDashboard({ children }: { children: ReactNode }) {
                   <MedicalInformationIcon />
                 </ListItemIcon>
                 <ListItemText primary="Devices" />
+              </ListItemButton>
+            </Link>
+            <Link to={'/fires'} style={{ textDecoration: 'none', color: '#000'}}>
+              <ListItemButton>
+                <ListItemIcon>
+                  <FireExtinguisherIcon />
+                </ListItemIcon>
+                <ListItemText primary="FireExtingGruisher" />
               </ListItemButton>
             </Link>
           </List>

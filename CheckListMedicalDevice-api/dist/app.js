@@ -16,6 +16,7 @@ const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
 const user_route_1 = __importDefault(require("./routes/user.route"));
+const fire_route_1 = __importDefault(require("./routes/fire.route"));
 const database_1 = require("./config/database");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
@@ -26,6 +27,7 @@ app.get("/", (req, res) => {
     res.send("Hello World!");
 });
 app.use("/users", user_route_1.default);
+app.use("/fireExtinguisher", fire_route_1.default);
 app.listen(process.env.PORT, () => __awaiter(void 0, void 0, void 0, function* () {
     yield database_1.sequelize.sync();
     console.log(`Server is running at http://localhost:${process.env.PORT}`);

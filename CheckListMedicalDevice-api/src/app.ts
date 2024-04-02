@@ -2,6 +2,7 @@ import express from "express"
 import dotenv from "dotenv"
 import cors from "cors"
 import userRoutes from "./routes/user.route";
+import fireRoutes from "./routes/fire.route";
 import { sequelize } from "./config/database";
 
 dotenv.config()
@@ -17,6 +18,7 @@ app.get("/", (req, res) => {
 
 
 app.use("/users", userRoutes);
+app.use("/fireExtinguisher", fireRoutes)
 
 app.listen(process.env.PORT!, async () => {
   await sequelize.sync();

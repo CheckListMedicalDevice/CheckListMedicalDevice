@@ -10,3 +10,14 @@ export interface IFire {
     note: string;
 }
 
+export interface RequestAndFire extends Request {
+    fire?: IFire;
+  }
+  
+  export interface ResponseAndFire extends Response {
+    fire?: IFire;
+  }
+  
+  export interface NextFunctionAndFire extends NextFunction {
+    fire?: IFire;
+  }

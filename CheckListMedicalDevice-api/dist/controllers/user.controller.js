@@ -17,7 +17,6 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const sequelize_1 = require("sequelize");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const user_model_1 = require("../models/user.model");
-// import { Land } from "../models/land.model";
 dotenv_1.default.config();
 const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -46,16 +45,6 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (!userCreate) {
             return res.status(404).json({ message: "Fail to register" });
         }
-        // const landCreate = await Land.create({
-        //   userId: userCreate.dataValues.id,
-        // });
-        // if (!landCreate) {
-        //   return res.status(404).json({ message: "Fail to register" });
-        // }
-        // const updateUser = await User.update(
-        //   { landId: landCreate.dataValues.id },
-        //   { where: { id: userCreate.dataValues.id } }
-        // );
         if (!updateUser) {
             return res.status(404).json({ message: "Fail to register" });
         }

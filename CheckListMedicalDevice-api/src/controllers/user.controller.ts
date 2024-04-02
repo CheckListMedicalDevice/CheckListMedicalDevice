@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 
 import { IUser, RequestAndUser } from "../interfaces/user.interface";
 import { User } from "../models/user.model";
-// import { Land } from "../models/land.model";
+
 
 dotenv.config();
 
@@ -57,19 +57,6 @@ const register = async (req: Request, res: Response) => {
     if (!userCreate) {
       return res.status(404).json({ message: "Fail to register" });
     }
-
-    // const landCreate = await Land.create({
-    //   userId: userCreate.dataValues.id,
-    // });
-
-    // if (!landCreate) {
-    //   return res.status(404).json({ message: "Fail to register" });
-    // }
-
-    // const updateUser = await User.update(
-    //   { landId: landCreate.dataValues.id },
-    //   { where: { id: userCreate.dataValues.id } }
-    // );
 
     if (!updateUser) {
       return res.status(404).json({ message: "Fail to register" });
