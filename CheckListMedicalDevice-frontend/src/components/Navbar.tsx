@@ -14,7 +14,7 @@ import { Link, NavigateFunction, useNavigate } from 'react-router-dom';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import FireExtinguisherIcon from '@mui/icons-material/FireExtinguisher';
-
+import HomeIcon from '@mui/icons-material/Home';
 import { ReactNode, useContext } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
 import { Button } from '@mui/material';
@@ -58,6 +58,15 @@ export default function Navbar({ children }: { children: ReactNode }) {
         <Toolbar />
         <Box sx={{ overflow: 'auto' }}>
           <List sx={{ textDecoration: 'none', color: '#000'}}>
+
+          <Link to={'/home'} style={{ textDecoration: 'none', color: '#000'}}>
+              <ListItemButton>
+                <ListItemIcon>
+                <HomeIcon />
+                </ListItemIcon>
+                <ListItemText primary="Home" />
+              </ListItemButton>
+            </Link>
             
             <Link to={'/CheckPerDay'} style={{ textDecoration: 'none', color: '#000'}}>
               <ListItemButton >
@@ -94,6 +103,8 @@ export default function Navbar({ children }: { children: ReactNode }) {
                 <ListItemText primary="จุดติดตั้งถังดับเพลิง" />
               </ListItemButton>
             </Link>
+
+            
 
           </List>
           <Divider />

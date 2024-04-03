@@ -1,5 +1,4 @@
 import { Typography } from "@mui/material";
-import React from "react";
 import Navbar from "../../components/Navbar";
 import Realmap from "../../assets/Realmap.png"
 
