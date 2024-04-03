@@ -14,6 +14,10 @@ import UserEditPage from "./pages/Dashboard/users/UserEditPage";
 import FirePages from "./pages/Dashboard/fireExtingruisher/FirePages";
 import FireEditPage from "./pages/Dashboard/fireExtingruisher/FIreEditPage";
 import FireCreatePage from "./pages/Dashboard/fireExtingruisher/FireCreate";
+import CheckPerDay from "./pages/Users/CheckPerDay";
+import CheckPerMonth from "./pages/Users/CheckPerMonth";
+import EverySixMonths from "./pages/Users/EverySixMonths";
+import MapFire from "./pages/Users/MapFire";
 
 
 
@@ -55,7 +59,13 @@ const RouterApp = (props: Props) => {
              {user && !user.isAdmin && (
               <>
              <Route path="/home" element={<HomePages />} />
+             <Route path="/CheckPerDay" element={<CheckPerDay />}/>
+             <Route path="/CheckPerMonth" element={<CheckPerMonth />}/>
+             <Route path="/EverySixMonths" element={<EverySixMonths />}/>
+             <Route path="/MapFire" element={<MapFire />}/>
+
               <Route path="*" element={<Navigate to="/home" />} />
+
               </>
               )}
      
