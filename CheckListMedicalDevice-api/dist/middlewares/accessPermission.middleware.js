@@ -12,12 +12,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const user_interface_1 = require("../interfaces/user.interface");
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const accessPermission = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const user = req.user;
-        if (user.isAdmin !== true) {
+        if (user.role !== user_interface_1.roleAdmin.admin) {
             return res.status(400).json({ message: "This service for admin" });
         }
         next();

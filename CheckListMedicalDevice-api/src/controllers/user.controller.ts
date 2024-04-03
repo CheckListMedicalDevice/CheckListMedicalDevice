@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import { Model, Op } from "sequelize";
 import jwt from "jsonwebtoken";
 
-import { IUser, RequestAndUser } from "../interfaces/user.interface";
+import { IUser, RequestAndUser, roleAdmin } from "../interfaces/user.interface";
 import { User } from "../models/user.model";
 
 
@@ -30,6 +30,9 @@ const register = async (req: Request, res: Response) => {
       phoneNumber?: string;
     } = req.body;
 
+
+
+
     const exitUser: Model<IUser> | null = await User.findOne({
       where: { username },
     });
@@ -39,7 +42,7 @@ const register = async (req: Request, res: Response) => {
       });
     }
     const hashPassword: string = await bcrypt.hash(password, 10);
-    const isAdmin: boolean = true;
+   const role = roleAdmin.user
     const data = {
       firstName,
       lastName,
@@ -48,7 +51,8 @@ const register = async (req: Request, res: Response) => {
       email,
       address,
       phoneNumber,
-      isAdmin,
+      role
+ 
     };
     const userCreate: Model<IUser> | null = await User.create({
       ...data,
@@ -114,11 +118,13 @@ const updateSelf = async (req: RequestAndUser, res: Response) => {
     firstName,
     lastName,
     username,
+    password,
     email,
     address,
     phoneNumber,
   }: {
     username?: string;
+    password?: string;
     firstName?: string;
     lastName?: string;
     email?: string;
@@ -129,6 +135,8 @@ const updateSelf = async (req: RequestAndUser, res: Response) => {
   const updateUser: any = await User.update(
     {
       firstName,
+      username,
+      password,
       lastName,
       email,
       address,
@@ -185,10 +193,11 @@ const getUserById = async (req: RequestAndUser, res: Response) => {
 const updateUser = async (req: RequestAndUser, res: Response) => {
   try {
     const { id } = req.params;
-    const { firstName, lastName, email, address, phoneNumber,username } = req.body;
+    const { firstName, lastName, email, address, phoneNumber,username,password } = req.body;
     const updateUser: any = await User.update(
       {
         username,
+        password,
         firstName,
         lastName,
         email,

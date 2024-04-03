@@ -1,6 +1,6 @@
 import { Link, NavigateFunction, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
-import { AuthContext } from "../contexts/AuthContext";
+import { AuthContext } from "../../contexts/AuthContext";
 import { useContext, useState } from "react";
 
 type Props = {};

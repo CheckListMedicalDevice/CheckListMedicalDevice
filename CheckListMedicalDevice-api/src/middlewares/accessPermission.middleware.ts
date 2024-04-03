@@ -1,5 +1,5 @@
 import { NextFunction, Response } from "express";
-import { IUser, RequestAndUser } from "../interfaces/user.interface";
+import { IUser, RequestAndUser, roleAdmin } from "../interfaces/user.interface";
 import dotenv from "dotenv";
 import { User } from "../models/user.model";
 import { Model } from "sequelize";
@@ -13,7 +13,7 @@ const accessPermission = async (
 ) => {
   try {
     const user = req.user!;
-    if (user.isAdmin !== true) {
+    if (user.role !== roleAdmin.admin) {
       return res.status(400).json({ message: "This service for admin" });
     }
 

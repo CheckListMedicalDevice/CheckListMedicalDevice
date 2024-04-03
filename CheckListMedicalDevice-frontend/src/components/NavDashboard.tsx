@@ -17,8 +17,9 @@ import FireExtinguisherIcon from '@mui/icons-material/FireExtinguisher';
 import { Link, NavigateFunction, useNavigate } from 'react-router-dom';
 
 import { ReactNode, useContext } from 'react';
-import { AuthContext } from '../contexts/AuthContext';
+
 import { Button } from '@mui/material';
+import { AuthContext } from '../../contexts/AuthContext';
 
 const drawerWidth = 240;
 

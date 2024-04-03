@@ -8,8 +8,13 @@ export interface IUser {
   email: string;
   address: string;
   phoneNumber: string;
-  isAdmin: boolean;
+  role: roleAdmin;
   landId: number | null;
   storeId: number | null;
   createAt: Date;
+}
+
+export enum roleAdmin {
+  admin = "admin",
+  user = "user",
 }

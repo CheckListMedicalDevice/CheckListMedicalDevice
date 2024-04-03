@@ -16,6 +16,7 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const sequelize_1 = require("sequelize");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const user_interface_1 = require("../interfaces/user.interface");
 const user_model_1 = require("../models/user.model");
 dotenv_1.default.config();
 const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -30,7 +31,7 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             });
         }
         const hashPassword = yield bcrypt_1.default.hash(password, 10);
-        const isAdmin = true;
+        const role = user_interface_1.roleAdmin.user;
         const data = {
             firstName,
             lastName,
@@ -39,7 +40,7 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             email,
             address,
             phoneNumber,
-            isAdmin,
+            role
         };
         const userCreate = yield user_model_1.User.create(Object.assign({}, data));
         if (!userCreate) {
@@ -85,9 +86,11 @@ const self = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 const updateSelf = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = req.user;
-    const { firstName, lastName, username, email, address, phoneNumber, } = req.body;
+    const { firstName, lastName, username, password, email, address, phoneNumber, } = req.body;
     const updateUser = yield user_model_1.User.update({
         firstName,
+        username,
+        password,
         lastName,
         email,
         address,
@@ -141,9 +144,10 @@ const getUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const { firstName, lastName, email, address, phoneNumber, username } = req.body;
+        const { firstName, lastName, email, address, phoneNumber, username, password } = req.body;
         const updateUser = yield user_model_1.User.update({
             username,
+            password,
             firstName,
             lastName,
             email,

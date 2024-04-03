@@ -9,7 +9,7 @@ export interface IUser {
   email: string;
   address: string;
   phoneNumber: string;
-  isAdmin: boolean;
+  role: roleAdmin;
   createAt: Date;
 }
 
@@ -23,4 +23,9 @@ export interface ResponseAndUser extends Response {
 
 export interface NextFunctionAndUser extends NextFunction {
   user?: IUser;
+}
+
+export enum roleAdmin {
+  admin = "admin",
+  user = "user",
 }

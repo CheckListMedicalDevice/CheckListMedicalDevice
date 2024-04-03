@@ -1,58 +1,58 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.User = void 0;
+exports.Transection = void 0;
 const sequelize_1 = require("sequelize");
 const database_1 = require("../config/database");
-exports.User = database_1.sequelize.define("users", {
+exports.Transection = database_1.sequelize.define("transection", {
     id: {
         type: sequelize_1.DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         field: "id",
     },
-    firstName: {
+    deviceId: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: true,
         defaultValue: "",
-        field: "firstName",
+        field: "deviceId",
     },
-    lastName: {
+    name: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: true,
         defaultValue: "",
-        field: "lastName",
+        field: "name",
     },
-    username: {
+    machineType: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false,
-        field: "username",
+        field: "machineType",
     },
-    hashPassword: {
+    location: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false,
-        field: "hashPassword",
+        field: "location",
     },
-    email: {
+    code: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: true,
         defaultValue: "",
-        field: "email",
+        field: "code",
     },
-    address: {
+    actor: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: true,
         defaultValue: "",
-        field: "address",
+        field: "actor",
     },
-    phoneNumber: {
+    note: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: true,
         defaultValue: "",
-        field: "phoneNumber",
+        field: "note",
     },
-    role: {
-        type: sequelize_1.DataTypes.STRING,
+    status: {
+        type: sequelize_1.DataTypes.ENUM('active', 'inactive'),
         allowNull: false,
-        field: "role",
+        field: "status",
     },
 });

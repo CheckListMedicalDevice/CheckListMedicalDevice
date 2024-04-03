@@ -42,7 +42,7 @@ const updateFireExtinguisher = async (req: RequestAndFire, res: Response) => {
   try {
     const { id } = req.params;
     const { code, location, actor } = req.body;
-    const updateUser: any = await FireExtinguisher.update(
+    const updateFireExtinguisher: any = await FireExtinguisher.update(
       {
         code,
         location,
@@ -55,7 +55,6 @@ const updateFireExtinguisher = async (req: RequestAndFire, res: Response) => {
       }
     );
 
-    console.log(updateUser);
     // if (!updateUser) {
     //   return res.status(404).json({ message: "Fail to update" });
     // }

@@ -38,7 +38,7 @@ const UserEditPage = () => {
         email: user.email,
         address: user.address,
         phoneNumber: user.phoneNumber,
-        hashPassword:"user"
+        hashPassword:user.hashPassword ?? ""
       });
     } catch (error) {
       console.log(error);

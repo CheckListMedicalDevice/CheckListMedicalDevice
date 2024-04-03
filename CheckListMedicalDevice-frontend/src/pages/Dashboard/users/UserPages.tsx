@@ -10,14 +10,16 @@ import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import { axiosInstance } from "../../../axiosRequest";
 import { IUser } from "../../../interfaces/user.interface";
-import { Typography } from "@mui/material";
+import { TablePagination, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
-import { AuthContext } from "../../../contexts/AuthContext";
+import { AuthContext } from "../../../../contexts/AuthContext";
 
 type Props = {};
 
 const UserPages = (props: Props) => {
   const { user } = useContext(AuthContext);
+  const [page, setPage] = useState(0);
+  const rowsPerPage = 10;
 
   const [listUsers, setListUsers] = useState<IUser[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -47,12 +49,20 @@ const UserPages = (props: Props) => {
     }
   };
 
+  const handleChangePage = (
+    event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => {
+    setPage(newPage);
+  };
+
   return (
     <>
       <NavbarDashboard>
         {loading ? (
           <Typography>Loading...</Typography>
         ) : (
+          <>
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
@@ -69,7 +79,12 @@ const UserPages = (props: Props) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {listUsers.map((user) => (
+              {(rowsPerPage > 0
+                    ? listUsers.slice(
+                        page * rowsPerPage,
+                        page * rowsPerPage + rowsPerPage
+                      ): 
+                listUsers).map((user) => (
                   <TableRow key={user.id}>
                     <TableCell component="th" scope="row">
                       {user.id}
@@ -92,7 +107,7 @@ const UserPages = (props: Props) => {
                     <TableCell align="right">
                       <Button
                         variant="outlined"
-                        color="secondary"
+                        color="error"
                         onClick={() => deleteUserById(user.id)}
                       >
                         Delete
@@ -103,7 +118,17 @@ const UserPages = (props: Props) => {
               </TableBody>
             </Table>
           </TableContainer>
+          <TablePagination
+          rowsPerPageOptions={[10]}
+          component="div"
+          count={listUsers.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+        />
+         </>
         )}
+       
         <Link to="/register">
           <Button variant="outlined" color="secondary">
             สมัครสมาชิก

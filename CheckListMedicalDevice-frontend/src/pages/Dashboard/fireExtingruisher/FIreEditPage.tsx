@@ -6,15 +6,15 @@ import NavbarDashboard from "../../../components/NavDashboard";
 import { axiosInstance } from "../../../axiosRequest";
 import { Container, CssBaseline, Box, Avatar, Typography, Grid, TextField, Button } from "@mui/material";
 
-const validationSchema = Yup.object({
-  code: Yup.string()
-    .min(3, 'กรุณากรอกอักขระ 3 ตัวขึ้นไป')
-    .max(8, 'กรุณากรอกอักขระไม่เกิน 8 ตัวอักษร')
-    .required('กรุณากรอกโค้ดเนม'),
-  location: Yup.string()
-    .min(8, 'กรุณากรอกอักขระ 8 ตัวขึ้นไป')
-    .required('กรุณากรอกตำแหน่ง'),
-});
+// const validationSchema = Yup.object({
+//   code: Yup.string()
+//     .min(3, 'กรุณากรอกอักขระ 3 ตัวขึ้นไป')
+//     .max(8, 'กรุณากรอกอักขระไม่เกิน 8 ตัวอักษร')
+//     .required('กรุณากรอกโค้ดเนม'),
+//   location: Yup.string()
+//     .min(8, 'กรุณากรอกอักขระ 8 ตัวขึ้นไป')
+//     .required('กรุณากรอกตำแหน่ง'),
+// });
 
 const FireEditPage = () => {
   const { id } = useParams();
@@ -23,10 +23,10 @@ const FireEditPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    fetchUserData();
+    fetchFireData();
   }, [id]);
 
-  const fetchUserData = async () => {
+  const fetchFireData = async () => {
     try {
       const response = await axiosInstance.get(`/fireExtinguisher/${id}`);
       const fire = response.data[0];
@@ -44,7 +44,15 @@ const FireEditPage = () => {
       code: "",
       location: "",
     },
-    validationSchema: validationSchema,
+    validationSchema: Yup.object({
+      code: Yup.string()
+        .min(3, 'กรุณากรอกอักขระ 3 ตัวขึ้นไป')
+        .max(8, 'กรุณากรอกอักขระไม่เกิน 8 ตัวอักษร'),
+        
+      location: Yup.string()
+        .min(8, 'กรุณากรอกอักขระ 8 ตัวขึ้นไป')
+       
+    }),
     onSubmit: async (values) => {
       try {
         setIsSubmitting(true);
@@ -91,10 +99,11 @@ const FireEditPage = () => {
                   label="Code"
                   autoFocus
                   onChange={formik.handleChange}
+                  
                   value={formik.values.code}
-                  helperText={formik.touched.code && formik.errors.code}
+                  helperText={formik.errors.code}
                   onBlur={formik.handleBlur}
-                  disabled={isSubmitting}
+               
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -107,9 +116,9 @@ const FireEditPage = () => {
                   autoComplete="family-name"
                   onChange={formik.handleChange}
                   value={formik.values.location}
-                  helperText={formik.touched.location && formik.errors.location}
+                  helperText={ formik.errors.location}
                   onBlur={formik.handleBlur}
-                  disabled={isSubmitting}
+              
                 />
               </Grid>
             </Grid>

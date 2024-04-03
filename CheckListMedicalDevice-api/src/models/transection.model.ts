@@ -1,57 +1,57 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../config/database";
 
-export const User = sequelize.define("users", {
+export const Transection = sequelize.define("transection", {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
     field: "id",
   },
-  firstName: {
+  deviceId: {
     type: DataTypes.STRING,
     allowNull: true,
     defaultValue: "",
-    field: "firstName",
+    field: "deviceId",
   },
-  lastName: {
+  name: {
     type: DataTypes.STRING,
     allowNull: true,
     defaultValue: "",
-    field: "lastName",
+    field: "name",
   },
-  username: {
+  machineType: {
     type: DataTypes.STRING,
     allowNull: false,
-    field: "username",
+    field: "machineType",
   },
-  hashPassword: {
+  location: {
     type: DataTypes.STRING,
     allowNull: false,
-    field: "hashPassword",
+    field: "location",
   },
-  email: {
+  code: {
     type: DataTypes.STRING,
     allowNull: true,
     defaultValue: "",
-    field: "email",
+    field: "code",
   },
-  address: {
+  actor: {
     type: DataTypes.STRING,
     allowNull: true,
     defaultValue: "",
-    field: "address",
+    field: "actor",
   },
-  phoneNumber: {
+  note: {
     type: DataTypes.STRING,
     allowNull: true,
     defaultValue: "",
-    field: "phoneNumber",
+    field: "note",
   },
-  role: {
-    type: DataTypes.STRING,
+  status: {
+    type: DataTypes.ENUM('active', 'inactive'),
     allowNull: false,
-    field: "role",
+    field: "status",
   },
   
 });

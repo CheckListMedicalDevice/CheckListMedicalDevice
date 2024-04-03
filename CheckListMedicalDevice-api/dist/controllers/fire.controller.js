@@ -38,7 +38,7 @@ const updateFireExtinguisher = (req, res) => __awaiter(void 0, void 0, void 0, f
     try {
         const { id } = req.params;
         const { code, location, actor } = req.body;
-        const updateUser = yield fire_model_1.FireExtinguisher.update({
+        const updateFireExtinguisher = yield fire_model_1.FireExtinguisher.update({
             code,
             location,
             actor,
@@ -47,7 +47,6 @@ const updateFireExtinguisher = (req, res) => __awaiter(void 0, void 0, void 0, f
                 id,
             },
         });
-        console.log(updateUser);
         // if (!updateUser) {
         //   return res.status(404).json({ message: "Fail to update" });
         // }

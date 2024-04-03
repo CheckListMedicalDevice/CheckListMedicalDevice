@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import HomePages from "./pages/HomePages";
 import Dashboard from "./pages/Dashboard/DashboardPage";
 import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "./contexts/AuthContext";
+
 import { Box } from "@mui/material";
 import DevicePage from "./pages/Dashboard/DevicePage";
 import CheckList from "./pages/Dashboard/ChekList";
@@ -14,12 +14,12 @@ import UserEditPage from "./pages/Dashboard/users/UserEditPage";
 import FirePages from "./pages/Dashboard/fireExtingruisher/FirePages";
 import FireEditPage from "./pages/Dashboard/fireExtingruisher/FIreEditPage";
 import FireCreatePage from "./pages/Dashboard/fireExtingruisher/FireCreate";
+import { AuthContext } from "../contexts/AuthContext";
+import { roleAdmin } from "./interfaces/user.interface";
 
 
 
-type Props = {};
-
-const RouterApp = (props: Props) => {
+const RouterApp = () => {
   const { user } = useContext(AuthContext);
   const [authLoaded, setAuthLoaded] = useState(false);
 
@@ -52,14 +52,14 @@ const RouterApp = (props: Props) => {
         <Routes>
           {user ? (
             <>
-             {user && !user.isAdmin && (
+             {user && user.role === roleAdmin.user && (
               <>
              <Route path="/home" element={<HomePages />} />
               <Route path="*" element={<Navigate to="/home" />} />
               </>
               )}
      
-              {user.isAdmin ? (
+              {user.role === roleAdmin.admin ? (
                 <>
                 
                 
@@ -85,7 +85,7 @@ const RouterApp = (props: Props) => {
               <Route path="*" element={<Navigate to="/login" />} />
             </>
           )}
-          {user && user.isAdmin && (
+          {user && user.role === roleAdmin.admin && (
             <Route path="*" element={<Navigate to="/dashboard" />} />
           )}
      
