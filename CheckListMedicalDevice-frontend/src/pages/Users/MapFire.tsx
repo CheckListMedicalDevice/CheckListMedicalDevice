@@ -9,7 +9,7 @@ const MapFire = (props: Props) => {
     <>
       <Navbar>
         <Typography variant="body1" color="initial">
-        <img style={{ height: "auto", width: "auto" }} src={Realmap} alt="logo" />
+          <img style={{ height: "auto", width: "auto" }} src={Realmap} alt="logo" />
         </Typography>
       </Navbar>
     </>
