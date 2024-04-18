@@ -1,34 +1,24 @@
-import { Link, NavigateFunction, useNavigate } from "react-router-dom";
-import Button from "@mui/material/Button";
-import { AuthContext } from "../../contexts/AuthContext";
-import { useContext, useState } from "react";
+import Navbar from "../components/Navbar";
+
 
 type Props = {};
 
-function HomePages({}: Props) {
-  const { user, removeUser } = useContext(AuthContext);
-  const [message, setMessage] = useState<string>();
-
-  const navigate: NavigateFunction = useNavigate();
-
-  const logout = () => {
-    removeUser();
-    return navigate("/login");
-  };
+function HomePages({ }: Props) {
 
   return (
-    <>
-      ยินดีต้อนรับคุณ {user?.firstName} {user?.lastName}
-      <Button
-        type="submit"
-        fullWidth
-        variant="contained"
-        sx={{ mt: 3, mb: 2 }}
-        onClick={logout}
-      >
-        Logout
-      </Button>
-    </>
+
+    <Navbar>
+      <>
+        <h1>
+          มาย
+        </h1>
+        <h6>
+          มึงแต้
+        </h6>
+      </>
+    </Navbar>
+
+
   );
 }
 

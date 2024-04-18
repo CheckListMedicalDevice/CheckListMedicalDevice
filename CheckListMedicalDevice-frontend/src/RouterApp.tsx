@@ -1,9 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-
 import HomePages from "./pages/HomePages";
 import Dashboard from "./pages/Dashboard/DashboardPage";
 import { useContext, useEffect, useState } from "react";
-
 import { Box } from "@mui/material";
 import DevicePage from "./pages/Dashboard/DevicePage";
 import CheckList from "./pages/Dashboard/ChekList";
@@ -16,8 +14,10 @@ import FireEditPage from "./pages/Dashboard/fireExtingruisher/FIreEditPage";
 import FireCreatePage from "./pages/Dashboard/fireExtingruisher/FireCreate";
 import { AuthContext } from "../contexts/AuthContext";
 import { roleAdmin } from "./interfaces/user.interface";
-
-
+import CheckPerDay from "./pages/Users/CheckPerDay";
+import CheckPerMonth from './pages/Users/CheckPerMonth';
+import EverySixMonths from "./pages/Users/EverySixMonths";
+import MapFire from "./pages/Users/MapFire";
 
 const RouterApp = () => {
   const { user } = useContext(AuthContext);
@@ -52,20 +52,19 @@ const RouterApp = () => {
         <Routes>
           {user ? (
             <>
-
-             {user && user.role === roleAdmin.user && (
-              <>
-             <Route path="/home" element={<HomePages />} />
-              <Route path="*" element={<Navigate to="/home" />} />
-              
-              </>
+              {user && user.role === roleAdmin.user && (
+                <>
+                  <Route path="/home" element={<HomePages />} />
+                  <Route path="*" element={<Navigate to="/home" />} />
+                  <Route path="/checkPerDay" element={<CheckPerDay />} />
+                  <Route path="/checkPerMonth" element={<CheckPerMonth />} />
+                  <Route path="/everySixMonths" element={<EverySixMonths />} />
+                  <Route path="/mapFire" element={<MapFire />} />
+                </>
               )}
-     
+
               {user.role === roleAdmin.admin ? (
                 <>
-                
-                
-                 
                   <Route path="/device" element={<DevicePage />} />
                   <Route path="/checklist" element={<CheckList />} />
                   <Route path="/users" element={<UserPages />} />
@@ -75,11 +74,9 @@ const RouterApp = () => {
                   <Route path="/fires/" element={<FirePages />} />
                   <Route path="/fireEdit/:id" element={<FireEditPage />} />
                   <Route path="/firecreate" element={<FireCreatePage />} />
-                  
-                  
                 </>
               ) : undefined}
-               
+
             </>
           ) : (
             <>
@@ -90,9 +87,9 @@ const RouterApp = () => {
           {user && user.role === roleAdmin.admin && (
             <Route path="*" element={<Navigate to="/dashboard" />} />
           )}
-     
-           
-         
+
+
+
         </Routes>
       </BrowserRouter>
     </>
