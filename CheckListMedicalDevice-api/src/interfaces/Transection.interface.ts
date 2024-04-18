@@ -1,4 +1,4 @@
-import { NextFunction } from "express";
+import { Request, Response, NextFunction } from "express";
 
 export interface ITransection {
     id: number;
@@ -12,34 +12,23 @@ export interface ITransection {
     status: TransactionStatus;
     createAt: Date;
     updateAt: Date;
-
-
 }
 
 export enum TransactionStatus {
     Pending = 0,
-    successful = 1,
-    failed = 2
+    Successful = 1,
+    Failed = 2
     // Cancelled = 3
 }
 
 export interface RequestAndTransection extends Request {
     transection?: ITransection;
-    params: {
-      id: number;
-    };
-  }
-  
-  export interface ResponseAndTransection extends Response {
+}
+
+export interface ResponseAndTransection extends Response {
     transection?: ITransection;
-  }
-  
-  export interface NextFunctionAndTransection extends NextFunction {
+}
+
+export interface NextFunctionAndTransection extends NextFunction {
     transection?: ITransection;
-  }
-  
-//   export enum roleAdmin {
-//     admin = "admin",
-//     user = "user",
-//   }
-  
+}

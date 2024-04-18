@@ -1,43 +1,49 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TransectionItems = void 0;
+exports.Device = void 0;
 const sequelize_1 = require("sequelize");
 const database_1 = require("../config/database");
-exports.TransectionItems = database_1.sequelize.define("transectionItems", {
+exports.Device = database_1.sequelize.define("device", {
     id: {
         type: sequelize_1.DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         field: "id",
     },
-    transectionId: {
-        type: sequelize_1.DataTypes.STRING,
-        allowNull: true,
-        defaultValue: "",
-        field: "transectionId",
-    },
-    deviceItemId: {
-        type: sequelize_1.DataTypes.STRING,
-        allowNull: true,
-        defaultValue: "",
-        field: "deviceItemId",
-    },
-    partName: {
+    name: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false,
         defaultValue: "",
-        field: "partName",
+        field: "name",
     },
-    ability: {
+    machineType: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false,
         defaultValue: "",
-        field: "ability",
+        field: "machineType",
     },
-    already: {
-        type: sequelize_1.DataTypes.BOOLEAN,
+    location: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false,
+        defaultValue: "",
+        field: "location",
+    },
+    code: {
+        type: sequelize_1.DataTypes.STRING,
         allowNull: true,
-        defaultValue: true,
-        field: "already",
+        defaultValue: "",
+        field: "code",
     },
+    actor: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: true,
+        defaultValue: "",
+        field: "actor",
+    },
+    note: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: true,
+        defaultValue: "",
+        field: "note",
+    }
 });

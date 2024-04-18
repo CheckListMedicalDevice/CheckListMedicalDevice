@@ -18,8 +18,9 @@ dotenv_1.default.config();
 const createTransection = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { deviceId, name, machineType, location, code, actor, note, status } = req.body;
+        const parsedDeviceId = parseInt(deviceId, 10);
         const data = {
-            deviceId,
+            deviceId: parsedDeviceId,
             name,
             machineType,
             location,
@@ -28,7 +29,7 @@ const createTransection = (req, res) => __awaiter(void 0, void 0, void 0, functi
             note,
             status,
         };
-        const transectionCreate = yield transection_model_1.Transection.create(Object.assign({}, data));
+        const transectionCreate = yield transection_model_1.Transection.create(data);
         if (!transectionCreate) {
             return res.status(404).json({ message: "Fail to Create" });
         }
@@ -43,8 +44,9 @@ const updateTransection = (req, res) => __awaiter(void 0, void 0, void 0, functi
     try {
         const { id } = req.params;
         const { deviceId, name, machineType, location, code, actor, note, status } = req.body;
+        const parsedDeviceId = parseInt(deviceId, 10);
         const updateTransection = yield transection_model_1.Transection.update({
-            deviceId,
+            deviceId: parsedDeviceId,
             name,
             machineType,
             location,
@@ -91,14 +93,14 @@ const getTransection = (req, res) => __awaiter(void 0, void 0, void 0, function*
 });
 const getTransectionById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const transection = req.transection;
+        const fire = req.transection;
         const { id } = req.params;
-        const findTransectionById = yield transection_model_1.Transection.findOne({
+        const findFireExingurisherById = yield transection_model_1.Transection.findAll({
             where: {
                 id,
             },
         });
-        return res.status(200).json(findTransectionById);
+        return res.status(200).json(findFireExingurisherById);
     }
     catch (error) {
         return res.status(500).json({ message: "Something went wrong" });

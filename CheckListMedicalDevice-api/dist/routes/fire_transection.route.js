@@ -4,8 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const fire_transection_controller_1 = __importDefault(require("../controllers/fire_transection.controller"));
+const fire_transection_1 = __importDefault(require("../controllers/fire_transection"));
 const router = (0, express_1.Router)();
-router.get('/', fire_transection_controller_1.default.generateFireTransections);
-router.get('/generatetransections', fire_transection_controller_1.default.generateFireTransections);
+router.get('/', fire_transection_1.default.generateFireTransections);
 exports.default = router;

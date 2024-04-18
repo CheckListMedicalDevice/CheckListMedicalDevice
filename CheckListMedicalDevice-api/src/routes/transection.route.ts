@@ -1,33 +1,14 @@
 import { Router } from "express";
-import transectionController from "../controllers/transection.controller";
-
+import fire_transection from "../controllers/fire_transection.controller";
 
 const router = Router();
 
-router.post("/createTransection", transectionController.createTransection);
-
-router.get("/getTransection", transectionController.getTransection);
-
-// router.get("/getTransectionById", transectionController.getTransectionById);
-
 router.get(
-    "/",
-    transectionController.getTransection
+    '/',
+    fire_transection.generateFireTransections
 );
-
-// router.get(
-//     "/:id",
-//     transectionController.getTransectionById
-// );
-
-router.put(
-    "/:id",
-    transectionController.updateTransection
-);
-
-router.delete(
-    "/:id",
-    transectionController.deleteTransection
-);
+router.get(
+    '/generatetransections', fire_transection.generateFireTransections
+)
 
 export default router;

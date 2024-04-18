@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 import { IFire, RequestAndFire } from "../interfaces/fire.interface";
 import { FireExtinguisher } from "../models/fire.model";
 import { Model, Op } from "sequelize";
+import { IFireTransection } from "../interfaces/fire_transection.interface";
+import { FireTransection } from "../models/firetransection.model";
 
 dotenv.config();
 
@@ -116,6 +118,8 @@ const deleteFireExtinguisher = async (req: RequestAndFire, res: Response) => {
     return res.status(500).json({ message: "Something went wrong" });
   }
 };
+
+
 
 export default {
   createFireExtinguisher,

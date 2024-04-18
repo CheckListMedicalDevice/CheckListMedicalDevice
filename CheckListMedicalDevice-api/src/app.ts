@@ -3,8 +3,11 @@ import dotenv from "dotenv"
 import cors from "cors"
 import userRoutes from "./routes/user.route";
 import fireRoutes from "./routes/fire.route";
-import transectionRoutes from './routes/transection.route'
+import transectionRoutes from "./routes/transection.route";
+import deviceRoutes from "./routes/device.route";
+
 import { sequelize } from "./config/database";
+
 
 dotenv.config()
 const app = express()
@@ -20,7 +23,9 @@ app.get("/", (req, res) => {
 
 app.use("/users", userRoutes);
 app.use("/fireExtinguisher", fireRoutes)
-app.use("/transection",transectionRoutes)
+app.use("/transection", transectionRoutes)
+
+// app.use("/device", deviceRoutes)
 
 app.listen(process.env.PORT!, async () => {
   await sequelize.sync();

@@ -52,10 +52,12 @@ const RouterApp = () => {
         <Routes>
           {user ? (
             <>
+
              {user && user.role === roleAdmin.user && (
               <>
              <Route path="/home" element={<HomePages />} />
               <Route path="*" element={<Navigate to="/home" />} />
+              
               </>
               )}
      

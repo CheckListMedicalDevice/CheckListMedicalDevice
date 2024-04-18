@@ -22,6 +22,7 @@ export interface ITransectionItem {
 // }
 
 export interface RequestAndTransectionItem extends Request {
+    params: { id: any; };
     transection?: ITransectionItem;
     
   }

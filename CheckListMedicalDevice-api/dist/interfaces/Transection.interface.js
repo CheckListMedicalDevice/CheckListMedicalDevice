@@ -4,11 +4,7 @@ exports.TransactionStatus = void 0;
 var TransactionStatus;
 (function (TransactionStatus) {
     TransactionStatus[TransactionStatus["Pending"] = 0] = "Pending";
-    TransactionStatus[TransactionStatus["successful"] = 1] = "successful";
-    TransactionStatus[TransactionStatus["failed"] = 2] = "failed";
+    TransactionStatus[TransactionStatus["Successful"] = 1] = "Successful";
+    TransactionStatus[TransactionStatus["Failed"] = 2] = "Failed";
     // Cancelled = 3
 })(TransactionStatus || (exports.TransactionStatus = TransactionStatus = {}));
-//   export enum roleAdmin {
-//     admin = "admin",
-//     user = "user",
-//   }

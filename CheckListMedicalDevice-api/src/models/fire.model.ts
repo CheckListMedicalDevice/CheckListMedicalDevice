@@ -20,7 +20,7 @@ export const FireExtinguisher = sequelize.define("fireExtinguisher", {
       allowNull: true,
       defaultValue: "",
       field: "location",
-    },
+    },  
     actor: {
         type: DataTypes.STRING,
         allowNull: true,
