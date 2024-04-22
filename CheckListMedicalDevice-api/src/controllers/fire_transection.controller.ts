@@ -1,7 +1,10 @@
-import { Model } from "sequelize";
+import { Model, Op } from "sequelize";
 import { IFireTransection } from "../interfaces/fire_transection.interface";
 import { FireExtinguisher } from "../models/fire.model";
 import { FireTransection } from "../models/firetransection.model";
+import { IFire, RequestAndFire } from "../interfaces/fire.interface";
+import { Response } from "express";
+
 
 async function generateFireTransections() {
   try {
@@ -34,6 +37,45 @@ async function generateFireTransections() {
   }
 }
 
+const getBillsByAdmin = async (req: RequestAndFire, res: Response) => {
+  try {
+    const { date } = req.query;
+
+    const findLengthExtinguisher: number = await FireExtinguisher.count({
+      where: { fireId: req.fire },
+    });
+
+    const findBillsByLand: Model<IFire>[] | null = await FireExtinguisher.findAll({
+      where: {
+        fireId: req.fire,
+        createdAt: date ? date : { [Op.ne]: null },
+      },
+      order: [["createdAt", "DESC"]],
+      limit: findLengthExtinguisher,
+    });
+
+    return res.status(200).json(findBillsByLand);
+  } catch (error) {
+    return res.status(500).json({ message: "Something went wrong" });
+  }
+};
+
+const getBillFireExtingruisher = async (req: RequestAndFire, res: Response) => {
+  try {
+    const allFireExtinguishers: Model<IFireTransection>[] = await FireTransection.findAll();
+    
+    return res.status(200).json({
+      total: allFireExtinguishers.length,
+      items: allFireExtinguishers,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Failed to retrieve fire extinguisher data" });
+  }
+};
+
 export default {
   generateFireTransections,
+  getBillsByAdmin,
+  getBillFireExtingruisher
 };

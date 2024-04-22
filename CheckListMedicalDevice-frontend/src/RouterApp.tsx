@@ -74,6 +74,7 @@ const RouterApp = () => {
                   <Route path="/fires/" element={<FirePages />} />
                   <Route path="/fireEdit/:id" element={<FireEditPage />} />
                   <Route path="/firecreate" element={<FireCreatePage />} />
+                  
                 </>
               ) : undefined}
 

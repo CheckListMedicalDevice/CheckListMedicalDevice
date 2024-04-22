@@ -23,13 +23,13 @@ import {
   const validationSchema = Yup.object({
     code: Yup.string()
       .min(3, 'กรุณากรอกอักขระ 3 ตัวขึ้นไป')
-      .max(8, 'กรุณากรอกอักขระไม่เกิน 8 ตัวอักษร')
+      .max(16, 'กรุณากรอกอักขระไม่เกิน 16 ตัวอักษร')
       .required('กรุณากรอกโค้ดเนม'),
     location: Yup.string()
-      .min(8, 'กรุณากรอกอักขระ 8 ตัวขึ้นไป')
+      .min(4, 'กรุณากรอกอักขระ 4 ตัวขึ้นไป')
       .required('กรุณากรอกตำแหน่ง'),
   });
-  
+   
   const FireCreatePage = () => {
     const [isLoading, setIsLoading] = useState<Boolean>(false);
     const [isSubmitting, setIsSubmitting] = useState(false);

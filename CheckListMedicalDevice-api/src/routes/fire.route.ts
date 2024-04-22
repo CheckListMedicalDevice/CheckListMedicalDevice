@@ -6,7 +6,10 @@ import authMiddleware from "../middlewares/auth.middleware";
 const router = Router();
 router.post('/createFireExtinguisher',fireController.createFireExtinguisher);
 router.get("/getFireExtinguisher",  fireController.getFireExtinguisher);
-router.get('/getFireExtinguisherById',  fireController.getFireExtinguisherById);
+router.get('/self',  fireController.self);
+
+router.get('/self',  fireController.updateFireExtinguisherSelf);
+
 
 router.get(
     '/',

@@ -15,7 +15,7 @@ export enum IFireTransectionStatusActive   {
   EMPTY = 0,
   INACTIVE = 1,
   ACTIVE = 2,
-}
+} 
 
 export enum IFireTransectionStatus   {
   WAITING = 0,

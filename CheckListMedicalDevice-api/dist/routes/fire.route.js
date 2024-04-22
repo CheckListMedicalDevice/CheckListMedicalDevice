@@ -8,7 +8,8 @@ const fire_controller_1 = __importDefault(require("../controllers/fire.controlle
 const router = (0, express_1.Router)();
 router.post('/createFireExtinguisher', fire_controller_1.default.createFireExtinguisher);
 router.get("/getFireExtinguisher", fire_controller_1.default.getFireExtinguisher);
-router.get('/getFireExtinguisherById', fire_controller_1.default.getFireExtinguisherById);
+router.get('/self', fire_controller_1.default.self);
+router.get('/self', fire_controller_1.default.updateFireExtinguisherSelf);
 router.get('/', fire_controller_1.default.getFireExtinguisher);
 router.get('/:id', fire_controller_1.default.getFireExtinguisherById);
 router.put('/:id', fire_controller_1.default.updateFireExtinguisher);

@@ -5,8 +5,12 @@ import userRoutes from "./routes/user.route";
 import fireRoutes from "./routes/fire.route";
 import transectionRoutes from "./routes/transection.route";
 import deviceRoutes from "./routes/device.route";
+import toolsRoutes from "./routes/tools.route."
 
 import { sequelize } from "./config/database";
+import fire_transectionController from "./controllers/fire_transection.controller";
+
+const cron = require('node-cron');
 
 
 dotenv.config()
@@ -23,7 +27,29 @@ app.get("/", (req, res) => {
 
 app.use("/users", userRoutes);
 app.use("/fireExtinguisher", fireRoutes)
-app.use("/transection", transectionRoutes)
+app.use("/transection", transectionRoutes);
+app.use("/tools", toolsRoutes)
+
+
+
+// cron.schedule(
+//   "*/5 * * * *",
+//   async() => {
+//     await fire_transectionController.generateFireTransections();
+//   },
+//   {
+//     timezone: "Asia/Bangkok",
+//   }
+// );
+  // cron.schedule(
+  //   "*/10 * * * * *",
+  //   async() => {
+  //     await fire_transectionController.generateFireTransections();
+  //   },
+  //   {
+  //     timezone: "Asia/Bangkok",
+  //   }
+  // );
 
 // app.use("/device", deviceRoutes)
 

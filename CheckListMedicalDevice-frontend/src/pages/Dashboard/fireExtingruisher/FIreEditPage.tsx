@@ -6,15 +6,6 @@ import NavbarDashboard from "../../../components/NavDashboard";
 import { axiosInstance } from "../../../axiosRequest";
 import { Container, CssBaseline, Box, Avatar, Typography, Grid, TextField, Button } from "@mui/material";
 
-// const validationSchema = Yup.object({
-//   code: Yup.string()
-//     .min(3, 'กรุณากรอกอักขระ 3 ตัวขึ้นไป')
-//     .max(8, 'กรุณากรอกอักขระไม่เกิน 8 ตัวอักษร')
-//     .required('กรุณากรอกโค้ดเนม'),
-//   location: Yup.string()
-//     .min(8, 'กรุณากรอกอักขระ 8 ตัวขึ้นไป')
-//     .required('กรุณากรอกตำแหน่ง'),
-// });
 
 const FireEditPage = () => {
   const { id } = useParams();
@@ -42,16 +33,12 @@ const FireEditPage = () => {
   const formik = useFormik({
     initialValues: {
       code: "",
+
       location: "",
     },
     validationSchema: Yup.object({
-      code: Yup.string()
-        .min(3, 'กรุณากรอกอักขระ 3 ตัวขึ้นไป')
-        .max(8, 'กรุณากรอกอักขระไม่เกิน 8 ตัวอักษร'),
-        
-      location: Yup.string()
-        .min(8, 'กรุณากรอกอักขระ 8 ตัวขึ้นไป')
-       
+      name: Yup.string(),
+      note: Yup.string(),
     }),
     onSubmit: async (values) => {
       try {

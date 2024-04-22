@@ -15,9 +15,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv_1 = __importDefault(require("dotenv"));
 const fire_model_1 = require("../models/fire.model");
 dotenv_1.default.config();
+const self = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    return res.status(200).json(req.fire);
+});
 const createFireExtinguisher = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { code, location, actor, } = req.body;
+        const exitTools = yield fire_model_1.FireExtinguisher.findOne({
+            where: { code },
+        });
+        if (exitTools) {
+            return res.status(400).json({
+                message: `There is already a name ${code}.`,
+            });
+        }
         const data = {
             code,
             location,
@@ -31,28 +42,6 @@ const createFireExtinguisher = (req, res) => __awaiter(void 0, void 0, void 0, f
     }
     catch (error) {
         console.error(error);
-        return res.status(500).json({ message: "Something went wrong" });
-    }
-});
-const updateFireExtinguisher = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { id } = req.params;
-        const { code, location, actor } = req.body;
-        const updateFireExtinguisher = yield fire_model_1.FireExtinguisher.update({
-            code,
-            location,
-            actor,
-        }, {
-            where: {
-                id,
-            },
-        });
-        // if (!updateUser) {
-        //   return res.status(404).json({ message: "Fail to update" });
-        // }
-        return res.status(200).json({ message: "Update success" });
-    }
-    catch (error) {
         return res.status(500).json({ message: "Something went wrong" });
     }
 });
@@ -84,6 +73,25 @@ const getFireExtinguisherById = (req, res) => __awaiter(void 0, void 0, void 0, 
         return res.status(500).json({ message: "Something went wrong" });
     }
 });
+const updateFireExtinguisher = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = req.params;
+        const { code, location, actor } = req.body;
+        const updateFireExtinguisher = yield fire_model_1.FireExtinguisher.update({
+            code,
+            location,
+            actor,
+        }, {
+            where: {
+                id,
+            },
+        });
+        return res.status(200).json({ message: "Update success" });
+    }
+    catch (error) {
+        return res.status(500).json({ message: "Something went wrong" });
+    }
+});
 const deleteFireExtinguisher = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
@@ -101,10 +109,16 @@ const deleteFireExtinguisher = (req, res) => __awaiter(void 0, void 0, void 0, f
         return res.status(500).json({ message: "Something went wrong" });
     }
 });
+const updateFireExtinguisherSelf = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const fire = req.fire;
+    const { code, location, } = req.body;
+});
 exports.default = {
     createFireExtinguisher,
     updateFireExtinguisher,
     getFireExtinguisher,
     getFireExtinguisherById,
     deleteFireExtinguisher,
+    updateFireExtinguisherSelf,
+    self,
 };

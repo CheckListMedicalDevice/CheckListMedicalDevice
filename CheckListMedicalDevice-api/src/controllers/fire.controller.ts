@@ -8,6 +8,11 @@ import { FireTransection } from "../models/firetransection.model";
 
 dotenv.config();
 
+const self = async (req: RequestAndFire, res: Response) => {
+  return res.status(200).json(req.fire);
+};
+
+
 const createFireExtinguisher = async (req: Request, res: Response) => {
   try {
     const {
@@ -19,6 +24,15 @@ const createFireExtinguisher = async (req: Request, res: Response) => {
       location: string;
       actor: string;
     } = req.body;
+
+    const exitTools: Model<IFire> | null = await FireExtinguisher.findOne({
+      where: { code },
+    });
+    if (exitTools) {
+      return res.status(400).json({
+        message: `There is already a name ${code}.`,
+      });
+    }
 
     const data = {
       code,
@@ -40,32 +54,6 @@ const createFireExtinguisher = async (req: Request, res: Response) => {
   }
 };
 
-const updateFireExtinguisher = async (req: RequestAndFire, res: Response) => {
-  try {
-    const { id } = req.params;
-    const { code, location, actor } = req.body;
-    const updateFireExtinguisher: any = await FireExtinguisher.update(
-      {
-        code,
-        location,
-        actor,
-      },
-      {
-        where: {
-          id,
-        },
-      }
-    );
-
-    // if (!updateUser) {
-    //   return res.status(404).json({ message: "Fail to update" });
-    // }
-    return res.status(200).json({ message: "Update success" });
-  } catch (error) {
-    return res.status(500).json({ message: "Something went wrong" });
-  }
-};
-
 const getFireExtinguisher = async (req: RequestAndFire, res: Response) => {
   try {
     const allFireExtinguishers: Model<IFire>[] = await FireExtinguisher.findAll();
@@ -79,7 +67,6 @@ const getFireExtinguisher = async (req: RequestAndFire, res: Response) => {
     return res.status(500).json({ message: "Failed to retrieve fire extinguisher data" });
   }
 };
-
 
 
 const getFireExtinguisherById = async (req: RequestAndFire, res: Response) => {
@@ -97,6 +84,36 @@ const getFireExtinguisherById = async (req: RequestAndFire, res: Response) => {
     return res.status(500).json({ message: "Something went wrong" });
   }
 };
+
+const updateFireExtinguisher = async (req: RequestAndFire, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { code, location, actor } = req.body;
+    const updateFireExtinguisher: any = await FireExtinguisher.update(
+      {
+        code,
+        location,
+        actor,
+      },
+      {
+        where: {
+          id,
+        },
+      }
+    );
+
+   
+    return res.status(200).json({ message: "Update success" });
+  } catch (error) {
+    return res.status(500).json({ message: "Something went wrong" });
+  }
+};
+
+
+
+
+
+
 
 const deleteFireExtinguisher = async (req: RequestAndFire, res: Response) => {
   try {
@@ -119,6 +136,19 @@ const deleteFireExtinguisher = async (req: RequestAndFire, res: Response) => {
   }
 };
 
+const updateFireExtinguisherSelf = async (req: RequestAndFire, res: Response) => {
+  const fire: IFire = req.fire!;
+  const {
+      code,
+      location,
+      
+  }: {
+    code?: string;
+    location?: string;
+
+  } = req.body;
+}
+
 
 
 export default {
@@ -127,4 +157,6 @@ export default {
   getFireExtinguisher,
   getFireExtinguisherById,
   deleteFireExtinguisher,
+  updateFireExtinguisherSelf,
+  self,
 };

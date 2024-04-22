@@ -6,5 +6,6 @@ export interface IFire {
     createAt: Date;
     updateAt: Date;
     note: string;
+    
 }
 

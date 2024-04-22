@@ -18,7 +18,9 @@ const cors_1 = __importDefault(require("cors"));
 const user_route_1 = __importDefault(require("./routes/user.route"));
 const fire_route_1 = __importDefault(require("./routes/fire.route"));
 const transection_route_1 = __importDefault(require("./routes/transection.route"));
+const tools_route_1 = __importDefault(require("./routes/tools.route."));
 const database_1 = require("./config/database");
+const cron = require('node-cron');
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
@@ -30,6 +32,25 @@ app.get("/", (req, res) => {
 app.use("/users", user_route_1.default);
 app.use("/fireExtinguisher", fire_route_1.default);
 app.use("/transection", transection_route_1.default);
+app.use("/tools", tools_route_1.default);
+// cron.schedule(
+//   "*/5 * * * *",
+//   async() => {
+//     await fire_transectionController.generateFireTransections();
+//   },
+//   {
+//     timezone: "Asia/Bangkok",
+//   }
+// );
+// cron.schedule(
+//   "*/10 * * * * *",
+//   async() => {
+//     await fire_transectionController.generateFireTransections();
+//   },
+//   {
+//     timezone: "Asia/Bangkok",
+//   }
+// );
 // app.use("/device", deviceRoutes)
 app.listen(process.env.PORT, () => __awaiter(void 0, void 0, void 0, function* () {
     yield database_1.sequelize.sync();

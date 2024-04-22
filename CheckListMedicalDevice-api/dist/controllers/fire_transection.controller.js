@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const sequelize_1 = require("sequelize");
 const fire_model_1 = require("../models/fire.model");
 const firetransection_model_1 = require("../models/firetransection.model");
 function generateFireTransections() {
@@ -43,6 +44,41 @@ function generateFireTransections() {
         }
     });
 }
+const getBillsByAdmin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { date } = req.query;
+        const findLengthExtinguisher = yield fire_model_1.FireExtinguisher.count({
+            where: { fireId: req.fire },
+        });
+        const findBillsByLand = yield fire_model_1.FireExtinguisher.findAll({
+            where: {
+                fireId: req.fire,
+                createdAt: date ? date : { [sequelize_1.Op.ne]: null },
+            },
+            order: [["createdAt", "DESC"]],
+            limit: findLengthExtinguisher,
+        });
+        return res.status(200).json(findBillsByLand);
+    }
+    catch (error) {
+        return res.status(500).json({ message: "Something went wrong" });
+    }
+});
+const getBillFireExtingruisher = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const allFireExtinguishers = yield firetransection_model_1.FireTransection.findAll();
+        return res.status(200).json({
+            total: allFireExtinguishers.length,
+            items: allFireExtinguishers,
+        });
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Failed to retrieve fire extinguisher data" });
+    }
+});
 exports.default = {
     generateFireTransections,
+    getBillsByAdmin,
+    getBillFireExtingruisher
 };
