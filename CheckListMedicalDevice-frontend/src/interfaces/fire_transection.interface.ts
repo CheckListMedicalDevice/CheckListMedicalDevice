@@ -4,9 +4,11 @@ export interface IFireTransection {
     id: number;
     code: string;
     location: string;
-    createAt: Date;
+    note: string;
+    
+    createdAt: string;
     updateAt: Date;
-    status: string;
+    status: IFireTransectionStatus;
     statusActive: IFireTransectionStatusActive;
 }
 
@@ -19,7 +21,7 @@ export enum IFireTransectionStatusActive   {
 
 export enum IFireTransectionStatus   {
   WAITING = 0,
-  sucessful = 1,
+  SUCESSFUL = 1,
 }
 
 

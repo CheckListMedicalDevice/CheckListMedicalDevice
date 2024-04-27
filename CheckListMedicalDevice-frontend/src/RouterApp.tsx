@@ -1,10 +1,10 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import HomePages from "./pages/HomePages";
+import HomePages from "./pages/Users/HomePages";
 import Dashboard from "./pages/Dashboard/DashboardPage";
 import { useContext, useEffect, useState } from "react";
 import { Box } from "@mui/material";
 import DevicePage from "./pages/Dashboard/DevicePage";
-import CheckList from "./pages/Dashboard/ChekList";
+
 import UserPages from "./pages/Dashboard/users/UserPages";
 import LoginPage from "./pages/LoginPage";
 import UserRegister from "./pages/Dashboard/users/UserRegisterPage";
@@ -14,10 +14,21 @@ import FireEditPage from "./pages/Dashboard/fireExtingruisher/FIreEditPage";
 import FireCreatePage from "./pages/Dashboard/fireExtingruisher/FireCreate";
 import { AuthContext } from "../contexts/AuthContext";
 import { roleAdmin } from "./interfaces/user.interface";
-import CheckPerDay from "./pages/Users/CheckPerDay";
-import CheckPerMonth from './pages/Users/CheckPerMonth';
-import EverySixMonths from "./pages/Users/EverySixMonths";
+
+
 import MapFire from "./pages/Users/MapFire";
+import CheckDevice from "./pages/Users/CheckDevice";
+import CheckFireExtingruisher from "./pages/Users/CheckFireExtingruisher";
+import StockTools from "./pages/Dashboard/stockItem/StockTools";
+import AddTools from "./pages/Dashboard/stockItem/AddTools";
+import EditTools from "./pages/Dashboard/stockItem/EditTools";
+import CheckStatusFire from "./pages/Users/CheckStatusFire";
+
+
+
+
+ 
+
 
 const RouterApp = () => {
   const { user } = useContext(AuthContext);
@@ -56,17 +67,19 @@ const RouterApp = () => {
                 <>
                   <Route path="/home" element={<HomePages />} />
                   <Route path="*" element={<Navigate to="/home" />} />
-                  <Route path="/checkPerDay" element={<CheckPerDay />} />
-                  <Route path="/checkPerMonth" element={<CheckPerMonth />} />
-                  <Route path="/everySixMonths" element={<EverySixMonths />} />
+                  <Route path="/checkdevice" element={<CheckDevice />} />
+                  <Route path="/checkfireextingruisher" element={<CheckFireExtingruisher />} />
                   <Route path="/mapFire" element={<MapFire />} />
+                  <Route path="/checkstatusfire/:id" element={<CheckStatusFire />} />
+                
+                
+
                 </>
               )}
 
               {user.role === roleAdmin.admin ? (
                 <>
                   <Route path="/device" element={<DevicePage />} />
-                  <Route path="/checklist" element={<CheckList />} />
                   <Route path="/users" element={<UserPages />} />
                   <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="/register" element={<UserRegister />} />
@@ -74,6 +87,10 @@ const RouterApp = () => {
                   <Route path="/fires/" element={<FirePages />} />
                   <Route path="/fireEdit/:id" element={<FireEditPage />} />
                   <Route path="/firecreate" element={<FireCreatePage />} />
+                  <Route path="/stocktools" element={<StockTools />} />
+                  <Route path="/addtools" element={<AddTools />} />
+                  <Route path="/edittools/:id" element={<EditTools />} />
+
                   
                 </>
               ) : undefined}

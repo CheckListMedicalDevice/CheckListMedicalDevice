@@ -158,7 +158,6 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 id,
             },
         });
-        console.log(updateUser);
         // if (!updateUser) {
         //   return res.status(404).json({ message: "Fail to update" });
         // }

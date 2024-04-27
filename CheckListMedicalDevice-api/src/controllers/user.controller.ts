@@ -211,7 +211,7 @@ const updateUser = async (req: RequestAndUser, res: Response) => {
       }
     );
 
-    console.log(updateUser);
+    
     // if (!updateUser) {
     //   return res.status(404).json({ message: "Fail to update" });
     // }

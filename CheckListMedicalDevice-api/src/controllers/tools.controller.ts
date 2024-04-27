@@ -23,11 +23,7 @@ const createTools = async (req: Request, res: Response) => {
       count: number;
     } = req.body;
 
-    if (typeof count !== "number") {
-      return res.status(400).json({
-        message: `Count must be a number.`,
-      });
-    }
+ 
 
 
     const exitTools: Model<ITools> | null = await Tools.findOne({

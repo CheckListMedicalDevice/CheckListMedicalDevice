@@ -5,7 +5,7 @@ const router = Router();
 
 router.get(
     '/',
-    fire_transection.generateFireTransections
+    fire_transection.getBillFireExtingruisher
 );
 
 router.get(
@@ -18,5 +18,7 @@ router.get(
 )
 
 router.get('/getbillbyadmin', fire_transection.getBillsByAdmin)
+
+router.put('/:id', fire_transection.updateFireExtinguisherTransection)
 
 export default router;

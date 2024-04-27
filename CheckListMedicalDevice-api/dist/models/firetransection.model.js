@@ -23,6 +23,12 @@ exports.FireTransection = database_1.sequelize.define("firetransection", {
         defaultValue: "",
         field: "location",
     },
+    note: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: true,
+        defaultValue: "",
+        field: "note",
+    },
     statusActive: {
         type: sequelize_1.DataTypes.INTEGER,
         allowNull: false,

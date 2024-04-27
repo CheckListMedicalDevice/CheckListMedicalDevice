@@ -18,7 +18,8 @@ import HomeIcon from '@mui/icons-material/Home';
 import { ReactNode, useContext } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
 import { Button } from '@mui/material';
-
+import DevicesOtherIcon from '@mui/icons-material/DevicesOther';
+import WhatshotIcon from '@mui/icons-material/Whatshot';
 const drawerWidth = 240;
 
 export default function Navbar({ children }: { children: ReactNode }) {
@@ -64,36 +65,29 @@ export default function Navbar({ children }: { children: ReactNode }) {
                 <ListItemIcon>
                 <HomeIcon />
                 </ListItemIcon>
-                <ListItemText primary="Home" />
+                <ListItemText primary="คลังอุปกรณ์" />
               </ListItemButton>
             </Link>
             
-            <Link to={'/checkPerDay'} style={{ textDecoration: 'none', color: '#000'}}>
+            <Link to={'/checkdevice'} style={{ textDecoration: 'none', color: '#000'}}>
               <ListItemButton >
                 <ListItemIcon>
-                  <CalendarTodayIcon />
+                  <DevicesOtherIcon />
                 </ListItemIcon>
-                <ListItemText primary="รายวัน" />
+                <ListItemText primary="อุปกรณ์" />
               </ListItemButton>
             </Link>
            
-            <Link to={'/checkPerMonth'} style={{ textDecoration: 'none', color: '#000'}}>
+            <Link to={'/checkfireextingruisher'} style={{ textDecoration: 'none', color: '#000'}}>
               <ListItemButton>
                 <ListItemIcon>
-                  <DateRangeIcon />
+                  <WhatshotIcon />
                 </ListItemIcon>
-                <ListItemText primary="รายเดือน" />
+                <ListItemText primary="ถังดับเพลิง" />
               </ListItemButton>
             </Link>
 
-            <Link to={'/everySixMonths'} style={{ textDecoration: 'none', color: '#000'}}>
-              <ListItemButton>
-                <ListItemIcon>
-                  <CalendarMonthIcon />
-                </ListItemIcon>
-                <ListItemText primary="ทุก6เดือน" />
-              </ListItemButton>
-            </Link>
+           
 
             <Link to={'/mapFire'} style={{ textDecoration: 'none', color: '#000'}}>
               <ListItemButton>

@@ -1,5 +1,4 @@
-import { Box, Input } from '@mui/material';
-import React from 'react';
+import { Box, InputAdornment, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 
 interface Props {
@@ -8,16 +7,28 @@ interface Props {
 }
 
 const Search = ({ value = '', onChange }: Props) => {
+
+
   return (
     <Box
-      style={{
-        marginTop: 10,
-        marginBottom: 5,
-      }}>
-      <Input
-        placeholder="ค้นหา ชื่อร้าน"
+      sx={{
+        marginTop: 2,
+        marginBottom: 1,
+      }}
+    >
+      <TextField
+        variant="outlined"
+        placeholder="ค้นหาชื่ออุปกรณ์"
         value={value}
-        onChange={(event) => onChange(event.target.value)}
+        onChange={(e) => onChange(e.target.value)}
+        fullWidth
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon />
+            </InputAdornment>
+          ),
+        }}
       />
     </Box>
   );

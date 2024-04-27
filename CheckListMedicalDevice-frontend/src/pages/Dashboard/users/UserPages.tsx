@@ -13,6 +13,11 @@ import { IUser } from "../../../interfaces/user.interface";
 import { TablePagination, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../../../contexts/AuthContext";
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 type Props = {};
 
@@ -23,6 +28,31 @@ const UserPages = (props: Props) => {
 
   const [listUsers, setListUsers] = useState<IUser[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
+
+  const handleOpenDeleteDialog = (userId: number) => {
+    setSelectedUserId(userId);
+    setOpenDeleteDialog(true);
+  };
+
+  const handleCloseDeleteDialog = () => {
+    setOpenDeleteDialog(false);
+    setSelectedUserId(null);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (selectedUserId !== null) {
+      try {
+        await axiosInstance.delete(`/users/${selectedUserId}`);
+        fetchStoreData();
+        handleCloseDeleteDialog();
+      } catch (error) {
+        console.error("Error deleting user:", error);
+      }
+    }
+  };
 
   const deleteUserById = async (id: number) => {
     try {
@@ -63,78 +93,101 @@ const UserPages = (props: Props) => {
           <Typography>Loading...</Typography>
         ) : (
           <>
-          <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell>id</TableCell>
-                  <TableCell>First Name</TableCell>
-                  <TableCell align="right">Last Name</TableCell>
-                  <TableCell align="right">Username</TableCell>
-                  <TableCell align="right">Address</TableCell>
-                  <TableCell align="right">PhoneNumber</TableCell>
-                  <TableCell align="right">Email</TableCell>
-                  <TableCell align="right">Edit</TableCell>
-                  <TableCell align="right">Delete</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-              {(rowsPerPage > 0
+            <TableContainer component={Paper}>
+              <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>id</TableCell>
+                    <TableCell>First Name</TableCell>
+                    <TableCell align="right">Last Name</TableCell>
+                    <TableCell align="right">Username</TableCell>
+                    <TableCell align="right">Address</TableCell>
+                    <TableCell align="right">PhoneNumber</TableCell>
+                    <TableCell align="right">Email</TableCell>
+                    <TableCell align="right">Edit</TableCell>
+                    <TableCell align="right">Delete</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {(rowsPerPage > 0
                     ? listUsers.slice(
                         page * rowsPerPage,
                         page * rowsPerPage + rowsPerPage
-                      ): 
-                listUsers).map((user) => (
-                  <TableRow key={user.id}>
-                    <TableCell component="th" scope="row">
-                      {user.id}
-                    </TableCell>
-                    <TableCell component="th" scope="row">
-                      {user.firstName}
-                    </TableCell>
-                    <TableCell align="right">{user.lastName}</TableCell>
-                    <TableCell align="right">{user.username}</TableCell>
-                    <TableCell align="right">{user.address}</TableCell>
-                    <TableCell align="right">{user.phoneNumber}</TableCell>
-                    <TableCell align="right">{user.email}</TableCell>
-                    <TableCell align="right">
-                      <Link to={`/edituser/${user.id}`}>
-                        <Button variant="outlined" color="primary">
-                          Edit
+                      )
+                    : listUsers
+                  ).map((user) => (
+                    <TableRow key={user.id}>
+                      <TableCell component="th" scope="row">
+                        {user.id}
+                      </TableCell>
+                      <TableCell component="th" scope="row">
+                        {user.firstName}
+                      </TableCell>
+                      <TableCell align="right">{user.lastName}</TableCell>
+                      <TableCell align="right">{user.username}</TableCell>
+                      <TableCell align="right">{user.address}</TableCell>
+                      <TableCell align="right">{user.phoneNumber}</TableCell>
+                      <TableCell align="right">{user.email}</TableCell>
+                      <TableCell align="right">
+                        <Link to={`/edituser/${user.id}`}>
+                          <Button variant="outlined" color="primary">
+                            Edit
+                          </Button>
+                        </Link>
+                      </TableCell>
+                      <TableCell align="right">
+                        <Button
+                          variant="outlined"
+                          color="error"
+                          onClick={() => handleOpenDeleteDialog(user.id)}
+                        >
+                          Delete
                         </Button>
-                      </Link>
-                    </TableCell>
-                    <TableCell align="right">
-                      <Button
-                        variant="outlined"
-                        color="error"
-                        onClick={() => deleteUserById(user.id)}
-                      >
-                        Delete
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <TablePagination
-          rowsPerPageOptions={[10]}
-          component="div"
-          count={listUsers.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-        />
-         </>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <TablePagination
+              rowsPerPageOptions={[10]}
+              component="div"
+              count={listUsers.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+            />
+          </>
         )}
-       
+
         <Link to="/register">
           <Button variant="outlined" color="secondary">
             สมัครสมาชิก
           </Button>
         </Link>
       </NavbarDashboard>
+
+      <Dialog
+        open={openDeleteDialog}
+        onClose={handleCloseDeleteDialog}
+        aria-labelledby="delete-dialog-title"
+        aria-describedby="delete-dialog-description"
+      >
+        <DialogTitle id="delete-dialog-title">Delete User</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="delete-dialog-description">
+            Are you sure you want to delete this user?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDeleteDialog} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleConfirmDelete} color="error" autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };

@@ -68,12 +68,12 @@ export default function NavbarDashboard({ children }: { children: ReactNode }) {
                 <ListItemText primary="Home" />
               </ListItemButton>
             </Link>
-            <Link to={'/checklist'} style={{ textDecoration: 'none', color: '#000'}}>
+            <Link to={'/stocktools'} style={{ textDecoration: 'none', color: '#000'}}>
               <ListItemButton >
                 <ListItemIcon>
                   <CheckCircleOutlineIcon />
                 </ListItemIcon>
-                <ListItemText primary="Checklist" />
+                <ListItemText primary="StockTools" />
               </ListItemButton>
             </Link>
             <Link to={'/users'} style={{ textDecoration: 'none', color: '#000'}}>

@@ -102,18 +102,11 @@ const updateFireExtinguisher = async (req: RequestAndFire, res: Response) => {
       }
     );
 
-   
     return res.status(200).json({ message: "Update success" });
   } catch (error) {
     return res.status(500).json({ message: "Something went wrong" });
   }
 };
-
-
-
-
-
-
 
 const deleteFireExtinguisher = async (req: RequestAndFire, res: Response) => {
   try {

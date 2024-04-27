@@ -13,6 +13,11 @@ import {
   TableBody,
   Button,
   TablePagination,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 
@@ -21,6 +26,31 @@ const FirePages = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [page, setPage] = useState(0);
   const rowsPerPage = 10;
+
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [selectedFireId, setSelectedFireId] = useState<number | null>(null);
+
+  const handleOpenDeleteDialog = (fireId: number) => {
+    setSelectedFireId(fireId);
+    setOpenDeleteDialog(true);
+  };
+
+  const handleCloseDeleteDialog = () => {
+    setOpenDeleteDialog(false);
+    setSelectedFireId(null);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (selectedFireId !== null) {
+      try {
+        await axiosInstance.delete(`/fireExtinguisher/${selectedFireId}`);
+        fetchFireData();
+        handleCloseDeleteDialog();
+      } catch (error) {
+        console.error("Error deleting fireExtinguisher:", error);
+      }
+    }
+  };
 
   const deleteFireExtinguisherById = async (id: number) => {
     try {
@@ -97,8 +127,7 @@ const FirePages = () => {
                         <Button
                           variant="outlined"
                           color="error"
-                          onClick={() => deleteFireExtinguisherById(fire.id)}
-                          
+                          onClick={() => handleOpenDeleteDialog(fire.id)}
                         >
                           Delete
                         </Button>
@@ -128,6 +157,27 @@ const FirePages = () => {
           </Button>
         </Link>
       </NavbarDashboard>
+      <Dialog
+        open={openDeleteDialog}
+        onClose={handleCloseDeleteDialog}
+        aria-labelledby="delete-dialog-title"
+        aria-describedby="delete-dialog-description"
+      >
+        <DialogTitle id="delete-dialog-title">Delete Fire Extinguisher</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="delete-dialog-description">
+            แน่ใจหรือว่าต้องการลบ?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDeleteDialog} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleConfirmDelete} color="error" autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };

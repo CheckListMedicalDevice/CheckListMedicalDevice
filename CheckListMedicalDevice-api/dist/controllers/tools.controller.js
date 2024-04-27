@@ -21,11 +21,6 @@ dotenv_1.default.config();
 const createTools = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { name, count, note, } = req.body;
-        if (typeof count !== "number") {
-            return res.status(400).json({
-                message: `Count must be a number.`,
-            });
-        }
         const exitTools = yield tools_model_1.Tools.findOne({
             where: { name },
         });

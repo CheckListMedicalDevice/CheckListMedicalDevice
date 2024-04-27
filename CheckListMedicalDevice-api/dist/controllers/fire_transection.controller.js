@@ -19,12 +19,12 @@ function generateFireTransections() {
             if (findFire.length === 0) {
                 throw new Error("No fire extinguishers found.");
             }
-            console.log(findFire);
             const FireTransectionPromises = findFire.map((fire) => __awaiter(this, void 0, void 0, function* () {
                 try {
                     const bill = yield firetransection_model_1.FireTransection.create({
                         code: fire.dataValues.code,
                         location: fire.dataValues.location,
+                        note: fire.dataValues.note,
                         status: fire.dataValues.status,
                         statusActive: fire.dataValues.statusActive,
                     });
@@ -77,8 +77,28 @@ const getBillFireExtingruisher = (req, res) => __awaiter(void 0, void 0, void 0,
         return res.status(500).json({ message: "Failed to retrieve fire extinguisher data" });
     }
 });
+const updateFireExtinguisherTransection = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = req.params;
+        const { code, location, note, statusActive, status } = req.body;
+        const updateFireExtinguisher = yield firetransection_model_1.FireTransection.update({
+            note,
+            statusActive,
+            status
+        }, {
+            where: {
+                id,
+            },
+        });
+        return res.status(200).json({ message: "Update success" });
+    }
+    catch (error) {
+        return res.status(500).json({ message: "Something went wrong" });
+    }
+});
 exports.default = {
     generateFireTransections,
     getBillsByAdmin,
-    getBillFireExtingruisher
+    getBillFireExtingruisher,
+    updateFireExtinguisherTransection
 };

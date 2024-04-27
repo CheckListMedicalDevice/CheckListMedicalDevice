@@ -18,7 +18,7 @@ const DeleteConfirmationDialog: React.FC<DeleteConfirmationDialogProps> = ({ ope
       <DialogTitle id="alert-dialog-title">{"ยืนยันการลบอุปกรณ์"}</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          คุณแน่ใจหรือไม่ที่จะลบอุปกรณ์นี้?
+          คุณแน่ใจหรือไม่ที่จะลบ?
         </DialogContentText>
       </DialogContent>
       <DialogActions>

@@ -7,99 +7,74 @@ import {
   CssBaseline,
   Grid,
   Typography,
-  Alert,
+
 } from "@mui/material";
-import React, { useState } from "react";
+import  { useState } from "react";
 import NavbarDashboard from "../../../components/NavDashboard";
 
 import { axiosInstance } from "../../../axiosRequest";
 import axios from "axios";
-import { NavigateFunction, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+
 import "react-toastify/dist/ReactToastify.css";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { IUser } from "../../../interfaces/user.interface";
 
-
+const validationSchema = Yup.object({
+  firstName: Yup.string().required("กรุณากรอกชื่อ"),
+  lastName: Yup.string().required("กรุณากรอกนามสกุล"),
+  username: Yup.string().required("กรุณากรอกชื่อผู้ใช้"),
+  password: Yup.string().min(8, "Must be at least 8 characters"),
+  email: Yup.string().email("Invalid email address"),
+  address: Yup.string().required("กรุณากรอกที่อยู่"),
+  phoneNumber: Yup.string().required("กรุณากรอกเบอร์โทรศัพท์"),
+});
 
 const UserRegister = () => {
-  const [message, setMessage] = useState<string>();
-  const navigate: NavigateFunction = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoading, setIsLoading] = useState<Boolean>(false);
+  
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
+  const formik = useFormik({
+    initialValues: {
+      firstName: "",
+      lastName: "",
+      username: "",
+      password: "",
+      email: "",
+      address: "",
+    }as IUser, 
+    validationSchema: validationSchema,
+    onSubmit: async (values: IUser) => {
+      setIsLoading(true);
+      try {
+        await axiosInstance.post("/users/register/", {
+          firstName: values.firstName,
+          lastName: values.lastName,
+          username: values.username,
+          password: values.password,
+          email: values.email,
+          address: values.address,
+          phoneNumber: values.phoneNumber,
+        });
+        alert(" เพิ่มอุปกรณ์สำเร็จแล้ว!");
 
-    if ((data.get("firstName")! as string).length < 4) {
-      setTimeout(() => setMessage(undefined), 3000);
-      setMessage("Password must be at least 8 characters");
-      return;
-    }
-    if ((data.get("lastName")! as string).length < 4) {
-      setTimeout(() => setMessage(undefined), 3000);
-      setMessage("Password must be at least 8 characters");
-      return;
-    }
-    if ((data.get("username")! as string).length < 4) {
-      setMessage("Username must be at least 4 characters");
-      setTimeout(() => setMessage(undefined), 3000);
-      return;
-    }
-    if ((data.get("password")! as string).length < 8) {
-      setMessage("Password must be at least 8 characters");
-      setTimeout(() => setMessage(undefined), 3000);
-      return;
-    }
-    if ((data.get("email")! as string).length < 4) {
-      setTimeout(() => setMessage(undefined), 3000);
-      setMessage("Password must be at least 8 characters");
-      return;
-    }
-    if ((data.get("address")! as string).length < 4) {
-      setTimeout(() => setMessage(undefined), 3000);
-      setMessage("Password must be at least 8 characters");
-      return;
-    }
-    if ((data.get("phoneNumber")! as string).length < 4) {
-      setTimeout(() => setMessage(undefined), 3000);
-      setMessage("Password must be at least 8 characters");
-      return;
-    }
-    try {
-      await axiosInstance.post("/users/register/", {
-        firstName: data.get("firstName")! as string,
-        lastName: data.get("lastName")! as string,
-        username: data.get("username")! as string,
-        password: data.get("password")! as string,
-        email: data.get("email")! as string,
-        address: data.get("address")! as string,
-        phoneNumber: data.get("phoneNumber")! as string,
-      });
-      toast.success("Registration successful");
-      navigate("/users/");
-    } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
-        setMessage(error.response.data.message);
-        setTimeout(() => setMessage(undefined), 3000);
+        setIsSubmitting(true);
+        window.location.href = `/users/`;
+      } catch (e: any) {
+        if (axios.isAxiosError(e)) {
+          alert(e?.response?.data.message);
+        } else {
+          console.error(e);
+        }
       }
-      toast.error("Failed to register");
-    }
-  };
+    },
+  });
 
   return (
     <>
       <NavbarDashboard>
         <Container component="main" maxWidth="xs">
-        {message && (
-        <Alert
-          severity="warning"
-          sx={{
-            position: "absolute",
-            top: 0,
-            right: 0,
-          }}
-        >
-          {message}
-        </Alert>
-      )}
           <CssBaseline />
           <Box
             sx={{
@@ -116,41 +91,56 @@ const UserRegister = () => {
             <Box
               component="form"
               noValidate
-              onSubmit={handleSubmit}
+              onSubmit={formik.handleSubmit}
               sx={{ mt: 3 }}
             >
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
-                  <TextField
-                    autoComplete="given-name"
-                    name="firstName"
-                    required
-                    fullWidth
-                    id="firstName"
-                    label="First Name"
-                    autoFocus
-                  />
+                <TextField
+                   
+                   required
+                   fullWidth
+                   id="firstName"
+                   label="firstName"
+                   name="firstName"
+                   autoComplete="firstName"
+                   onChange={formik.handleChange}
+                   value={formik.values.firstName}
+                   error={formik.touched.firstName && Boolean(formik.errors.firstName)}
+                   helperText={formik.touched.firstName && formik.errors.firstName}
+                 />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
                     required
                     fullWidth
                     id="lastName"
-                    label="Last Name"
+                    label="lastName"
                     name="lastName"
-                    autoComplete="family-name"
+                    autoComplete="lastName"
+                    onChange={formik.handleChange}
+                    value={formik.values.lastName}
+                    error={formik.touched.lastName && Boolean(formik.errors.lastName)}
+                    helperText={formik.touched.lastName && formik.errors.lastName}
                   />
                 </Grid>
+               
                 <Grid item xs={12}>
                   <TextField
+                   
                     required
                     fullWidth
                     id="username"
-                    label="username"
+                    label="Username"
                     name="username"
                     autoComplete="username"
+                    onChange={formik.handleChange}
+                    value={formik.values.username}
+                    error={formik.touched.username && Boolean(formik.errors.username)}
+                    helperText={formik.touched.username && formik.errors.username}
                   />
                 </Grid>
+
                 <Grid item xs={12}>
                   <TextField
                     required
@@ -160,6 +150,10 @@ const UserRegister = () => {
                     type="password"
                     id="password"
                     autoComplete="new-password"
+                    onChange={formik.handleChange}
+                    value={formik.values.password}
+                    error={formik.touched.password && Boolean(formik.errors.password)}
+                    helperText={formik.touched.password && formik.errors.password}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -170,6 +164,10 @@ const UserRegister = () => {
                     label="Email Address"
                     name="email"
                     autoComplete="email"
+                    onChange={formik.handleChange}
+                    value={formik.values.email}
+                    error={formik.touched.email && Boolean(formik.errors.email)}
+                    helperText={formik.touched.email && formik.errors.email}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -180,6 +178,10 @@ const UserRegister = () => {
                     label="Address"
                     name="address"
                     autoComplete="address"
+                    onChange={formik.handleChange}
+                    value={formik.values.address}
+                    error={formik.touched.address && Boolean(formik.errors.address)}
+                    helperText={formik.touched.address && formik.errors.address}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -187,29 +189,25 @@ const UserRegister = () => {
                     required
                     fullWidth
                     id="phoneNumber"
-                    label="phoneNumber"
+                    label="Phone Number"
                     name="phoneNumber"
                     autoComplete="phoneNumber"
+                    onChange={formik.handleChange}
+                    value={formik.values.phoneNumber}
+                    error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
+                    helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
                   />
                 </Grid>
-                {/* <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="role"
-                  label="role"
-                  name="role"
-                  autoComplete="role"
-                />
-              </Grid> */}
+                
               </Grid>
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                disabled={isSubmitting}
               >
-                Sign Up
+                {isLoading ? "กำลังเพิ่ม..." : "เพิ่มอุปกรณ์"}
               </Button>
             </Box>
           </Box>

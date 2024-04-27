@@ -36,14 +36,14 @@ function createData(
 }
 
 const rows = [
-  createData(1, 'SmokeA', 'A',),
-  createData(2, 'SomkeB', 'B',),
-  createData(3, 'SomkeC', 'C',),
-  createData(4, 'SomkeD', 'D',),
-  createData(5, 'SomkeE', 'E',),
+  createData(1, 'ไม่รู้ A', 'A',),
+  createData(2, ' ไม่รู้ B', 'B',),
+  createData(3, ' ไม่รู้ C', 'C',),
+  createData(4, ' ไม่รู้ D', 'D',),
+  createData(5, ' ไม่รู้ E', 'E',),
 ];
 
-export default function EverySixMonths() {
+export default function CheckDevice() {
   const [status, setStatus] = React.useState('');
   const handleChange = (event: SelectChangeEvent) => {
     setStatus(event.target.value as string);
@@ -53,6 +53,7 @@ export default function EverySixMonths() {
     <>
       <ThemeProvider theme={defaultTheme}>
         <Navbar>
+
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
@@ -72,6 +73,7 @@ export default function EverySixMonths() {
                     <TableCell component="th" scope="row" sx={{ textAlign: 'center' }}>{row.id}</TableCell>
                     <TableCell align="right" sx={{ textAlign: 'center' }}>{row.code}</TableCell>
                     <TableCell align="right" sx={{ textAlign: 'center' }}>{row.location}</TableCell>
+
                     <TableCell align="right" sx={{ textAlign: 'center' }}>
                       <Box sx={{ minWidth: 120 }}>
                         <FormControl sx={{ width: 250 }}>
@@ -81,7 +83,8 @@ export default function EverySixMonths() {
                             id="testt"
                             value={status}
                             label="สถานะ"
-                            onChange={handleChange}>
+                            onChange={handleChange}
+                          >
                             <MenuItem value={10}>ยังอยู่ดี</MenuItem>
                             <MenuItem value={20}>ปกติ</MenuItem>
                             <MenuItem value={30}>ฉิบหายแล้ววว</MenuItem>
@@ -89,6 +92,7 @@ export default function EverySixMonths() {
                         </FormControl>
                       </Box>
                     </TableCell>
+
                     <TableCell align="right" sx={{ textAlign: 'center' }} >
                       <TextField
                         id={`note-${row.id}`}
@@ -98,13 +102,14 @@ export default function EverySixMonths() {
                         sx={{ maxWidth: '300px' }}
                       />
                     </TableCell>
+
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
           </TableContainer>
           <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
-            <Button variant="contained">
+            <Button variant="outlined">
               Submit
             </Button>
           </Box>

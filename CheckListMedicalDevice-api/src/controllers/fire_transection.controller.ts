@@ -1,5 +1,5 @@
 import { Model, Op } from "sequelize";
-import { IFireTransection } from "../interfaces/fire_transection.interface";
+import { IFireTransection, RequestAndFireTransection } from "../interfaces/fire_transection.interface";
 import { FireExtinguisher } from "../models/fire.model";
 import { FireTransection } from "../models/firetransection.model";
 import { IFire, RequestAndFire } from "../interfaces/fire.interface";
@@ -12,12 +12,13 @@ async function generateFireTransections() {
     if (findFire.length === 0) {
       throw new Error("No fire extinguishers found.");
     }
-    console.log(findFire);
+    
     const FireTransectionPromises = findFire.map(async (fire) => {
       try {
         const bill = await FireTransection.create({
           code: fire.dataValues.code,
           location: fire.dataValues.location,
+          note: fire.dataValues.note,
           status: fire.dataValues.status,
           statusActive: fire.dataValues.statusActive,
         });
@@ -74,8 +75,33 @@ const getBillFireExtingruisher = async (req: RequestAndFire, res: Response) => {
   }
 };
 
+const updateFireExtinguisherTransection = async (req: RequestAndFireTransection, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { code, location, note, statusActive,status } = req.body;
+    const updateFireExtinguisher: any = await FireTransection.update(
+      {
+      
+        note,
+        statusActive,
+        status
+      },
+      {
+        where: {
+          id,
+        },
+      }
+    );
+
+    return res.status(200).json({ message: "Update success" });
+  } catch (error) {
+    return res.status(500).json({ message: "Something went wrong" });
+  }
+};
+
 export default {
   generateFireTransections,
   getBillsByAdmin,
-  getBillFireExtingruisher
+  getBillFireExtingruisher,
+  updateFireExtinguisherTransection
 };

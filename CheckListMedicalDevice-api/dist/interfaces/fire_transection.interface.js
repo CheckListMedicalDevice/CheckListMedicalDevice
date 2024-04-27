@@ -10,11 +10,8 @@ var IFireTransectionStatusActive;
 var IFireTransectionStatus;
 (function (IFireTransectionStatus) {
     IFireTransectionStatus[IFireTransectionStatus["WAITING"] = 0] = "WAITING";
-    IFireTransectionStatus[IFireTransectionStatus["sucessful"] = 1] = "sucessful";
+    IFireTransectionStatus[IFireTransectionStatus["SUCCESSFUL"] = 1] = "SUCCESSFUL";
 })(IFireTransectionStatus || (exports.IFireTransectionStatus = IFireTransectionStatus = {}));
-// export interface RequestAndFire extends Request {
-//     fire?: IFireTransection;
-//   }
 //   export interface ResponseAndFire extends Response {
 //     fire?: IFireTransection;
 //   }

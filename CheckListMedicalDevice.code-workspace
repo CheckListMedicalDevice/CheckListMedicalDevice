@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "CheckListMedicalDevice-api",
+			"path": "CheckListMedicalDevice-api"
+		},
+		{
+			"name": "CheckListMedicalDevice-frontend",
+			"path": "CheckListMedicalDevice-frontend"
+		}
+	],
+	"settings": {}
+}
