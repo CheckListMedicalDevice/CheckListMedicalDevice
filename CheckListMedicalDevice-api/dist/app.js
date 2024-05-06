@@ -18,7 +18,10 @@ const cors_1 = __importDefault(require("cors"));
 const user_route_1 = __importDefault(require("./routes/user.route"));
 const fire_route_1 = __importDefault(require("./routes/fire.route"));
 const transection_route_1 = __importDefault(require("./routes/transection.route"));
+const device_route_1 = __importDefault(require("./routes/device.route"));
 const tools_route_1 = __importDefault(require("./routes/tools.route."));
+const deviceSection_route_1 = __importDefault(require("./routes/deviceSection.route"));
+const device_transection_1 = __importDefault(require("./routes/device_transection"));
 const database_1 = require("./config/database");
 const cron = require('node-cron');
 dotenv_1.default.config();
@@ -33,6 +36,18 @@ app.use("/users", user_route_1.default);
 app.use("/fireExtinguisher", fire_route_1.default);
 app.use("/transection", transection_route_1.default);
 app.use("/tools", tools_route_1.default);
+app.use("/device", device_route_1.default);
+app.use("/deviceSections", deviceSection_route_1.default);
+app.use("/devicetransection", device_transection_1.default);
+// cron.schedule(
+//   "*/2 * * * *",
+//   async() => {
+//     await device_transectionController.generateDeviceTransections();
+//   },
+//   {
+//     timezone: "Asia/Bangkok",
+//   }
+// );
 // cron.schedule(
 //   "*/5 * * * *",
 //   async() => {

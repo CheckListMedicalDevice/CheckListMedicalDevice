@@ -5,10 +5,12 @@ import userRoutes from "./routes/user.route";
 import fireRoutes from "./routes/fire.route";
 import transectionRoutes from "./routes/transection.route";
 import deviceRoutes from "./routes/device.route";
-import toolsRoutes from "./routes/tools.route."
-
+import toolsRoutes from "./routes/tools.route.";
+import deviceSectionRoutes from "./routes/deviceSection.route";
+import devicetransectionRoutes from "./routes/device_transection";
 import { sequelize } from "./config/database";
 import fire_transectionController from "./controllers/fire_transection.controller";
+import device_transectionController from "./controllers/device_transection.controller";
 
 const cron = require('node-cron');
 
@@ -29,8 +31,19 @@ app.use("/users", userRoutes);
 app.use("/fireExtinguisher", fireRoutes)
 app.use("/transection", transectionRoutes);
 app.use("/tools", toolsRoutes)
+app.use("/device", deviceRoutes)
+app.use("/deviceSections", deviceSectionRoutes); 
+app.use("/devicetransection",devicetransectionRoutes)
 
-
+// cron.schedule(
+//   "*/2 * * * *",
+//   async() => {
+//     await device_transectionController.generateDeviceTransections();
+//   },
+//   {
+//     timezone: "Asia/Bangkok",
+//   }
+// );
 
 // cron.schedule(
 //   "*/5 * * * *",
@@ -41,6 +54,7 @@ app.use("/tools", toolsRoutes)
 //     timezone: "Asia/Bangkok",
 //   }
 // );
+
   // cron.schedule(
   //   "*/10 * * * * *",
   //   async() => {

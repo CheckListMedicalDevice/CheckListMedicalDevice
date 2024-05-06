@@ -9,17 +9,15 @@ import Divider from '@mui/material/Divider';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { Link, NavigateFunction, useNavigate } from 'react-router-dom';
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import DateRangeIcon from '@mui/icons-material/DateRange';
 import FireExtinguisherIcon from '@mui/icons-material/FireExtinguisher';
 import HomeIcon from '@mui/icons-material/Home';
 import { ReactNode, useContext } from 'react';
-import { AuthContext } from '../../contexts/AuthContext';
+
 import { Button } from '@mui/material';
 import DevicesOtherIcon from '@mui/icons-material/DevicesOther';
 import WhatshotIcon from '@mui/icons-material/Whatshot';
+import { AuthContext } from '../contexts/AuthContext';
 const drawerWidth = 240;
 
 export default function Navbar({ children }: { children: ReactNode }) {

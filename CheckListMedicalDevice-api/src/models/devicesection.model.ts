@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../config/database";
 
-export const Device = sequelize.define("device", {
+export const DeviceSection = sequelize.define("deviceSection", {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -9,9 +9,8 @@ export const Device = sequelize.define("device", {
         field: "id",
     },
     deviceId:{
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
-        defaultValue: "",
         field: "deviceId",
     },
     sectionName: {
@@ -26,12 +25,7 @@ export const Device = sequelize.define("device", {
         defaultValue: "",
         field: "ability",
     },
-    status: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        defaultValue: "",
-        field: "status",
-    },
+   
    
     
 })

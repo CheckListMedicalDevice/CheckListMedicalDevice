@@ -2,12 +2,12 @@ import { Request, Response, NextFunction } from "express";
 
 export interface IDeviceSection {
     id: number;
-    deviceId: string;
+    deviceId: number;
     sectionName: string;
     ability: string;
     status: string;
-    createAt: Date;
-    updateAt: Date;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 export enum IDeviceSectionStatus   {
@@ -16,14 +16,14 @@ export enum IDeviceSectionStatus   {
     ACTIVE = 2, 
   } 
 
-export interface RequestAndDevice extends Request {
-    device?: IDeviceSection;
+export interface RequestAndDeviceSection extends Request {
+    deviceSection?: IDeviceSection;
 }
 
-export interface ResponseAndDevice extends Response {
-    device?: IDeviceSection;
+export interface ResponseAndDeviceSection extends Response {
+    deviceSection?: IDeviceSection;
 }
 
-export interface NextFunctionAndDevice extends NextFunction {
-    device?: IDeviceSection;
+export interface NextFunctionAndDeviceSection extends NextFunction {
+    deviceSection?: IDeviceSection;
 } 

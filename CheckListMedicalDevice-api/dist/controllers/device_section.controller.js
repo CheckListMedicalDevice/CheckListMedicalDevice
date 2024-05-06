@@ -12,44 +12,40 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const devicesection_model_1 = require("./../models/devicesection.model");
 const dotenv_1 = __importDefault(require("dotenv"));
-const device_model_1 = require("../models/device.model");
+const devicesection_model_1 = require("../models/devicesection.model");
 dotenv_1.default.config();
-const createDevice = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const createDeviceSection = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { name, machineType, location, code, actor, note, } = req.body;
+        const { sectionName, ability, } = req.body;
+        const { id } = req.params;
         const data = {
-            name,
-            machineType,
-            location,
-            code,
-            actor,
-            note,
+            deviceId: id,
+            sectionName,
+            ability,
             createAt: new Date(),
             updateAt: new Date(),
         };
-        const deviceCreate = yield device_model_1.Device.create(Object.assign({}, data));
+        const deviceCreate = yield devicesection_model_1.DeviceSection.create(Object.assign({}, data));
         if (!deviceCreate) {
             return res.status(404).json({ message: "Fail to Create" });
         }
         return res.status(201).json({ message: "Create Device success" });
     }
     catch (error) {
-        return res.status(500).json({ message: "Something went wrong " });
+        return res
+            .status(500)
+            .json({ message: "Something went wrong can't create " });
     }
 });
-const updateDevice = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const updateDeviceSection = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const { name, machineType, location, code, actor, note } = req.body;
-        const updateDevice = yield device_model_1.Device.update({
-            name,
-            machineType,
-            location,
-            code,
-            actor,
-            note,
+        const { deviceId, sectionName, ability } = req.body;
+        const updateDeviceSection = yield devicesection_model_1.DeviceSection.update({
+            deviceId,
+            sectionName,
+            ability,
         }, {
             where: {
                 id,
@@ -58,43 +54,44 @@ const updateDevice = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         return res.status(200).json({ mesage: "Update Success" });
     }
     catch (error) {
-        return res.status(500).json({ message: "Failed to retrieve Device " });
+        return res
+            .status(500)
+            .json({ message: "Failed to retrieve DeviceSection " });
     }
 });
-const getDevice = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const getDeviceSection = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const alldevices = yield device_model_1.Device.findAll();
-        const deviceSections = yield devicesection_model_1.DeviceSection.findAll();
+        const alldeviceSections = yield devicesection_model_1.DeviceSection.findAll({ where: { deviceId: req.params.deviceId } });
         return res.status(200).json({
-            total: alldevices.length,
-            items: alldevices.map((device) => (Object.assign(Object.assign({}, device.dataValues), { deviceSection: deviceSections.filter((deviceSection) => deviceSection.dataValues.deviceId === device.dataValues.id) }))),
+            total: alldeviceSections.length,
+            items: alldeviceSections,
         });
     }
     catch (error) {
         return res.status(500).json({
-            message: "Failed to retrieve Device",
+            message: "Failed to retrieve DeviceSection",
         });
     }
 });
-const getDeviceById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const getDeviceSectionById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const device = yield device_model_1.Device.findByPk(id);
+        const device = yield devicesection_model_1.DeviceSection.findByPk(id);
         if (!device) {
-            return res.status(404).json({ message: "Device not found" });
+            return res.status(404).json({ message: "DeviceSection not found" });
         }
         return res.status(200).json(device);
     }
     catch (error) {
         return res.status(500).json({
-            message: "Failed to retrieve Device",
+            message: "Failed to retrieve DeviceSectionById",
         });
     }
 });
-const deleteDevice = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const deleteDeviceSection = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const deleteDevice = yield device_model_1.Device.destroy({
+        const deleteDevice = yield devicesection_model_1.DeviceSection.destroy({
             where: {
                 id,
             },
@@ -107,9 +104,9 @@ const deleteDevice = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.default = {
-    createDevice,
-    updateDevice,
-    getDevice,
-    getDeviceById,
-    deleteDevice,
+    createDeviceSection,
+    updateDeviceSection,
+    getDeviceSection,
+    getDeviceSectionById,
+    deleteDeviceSection,
 };

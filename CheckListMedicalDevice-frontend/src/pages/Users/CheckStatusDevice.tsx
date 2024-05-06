@@ -10,33 +10,34 @@ import {
   Avatar,
   Typography,
   Grid,
-  TextField,
+
   Button,
   Select,
   MenuItem,
 } from "@mui/material";
 import { axiosInstance } from "../../axiosRequest";
 
-import { IFireTransectionStatusActive } from "../../interfaces/fire_transection.interface";
+
+import { IDeviceStatusActive } from "../../interfaces/device_transection.interface";
 import Navbar from "../../components/Navbar";
 
-const CheckStatusFire = () => {
+const CheckStatusDevice = () => {
   const { id } = useParams();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    fetchFireData();
+    fetchDeviceData();
   }, [id]);
 
-  const fetchFireData = async () => {
+  const fetchDeviceData = async () => {
     try {
-      const response = await axiosInstance.get(`/transection/${id}`);
-      const bill = response.data;
+      const response = await axiosInstance.get(`/devicetransection/${id}`);
+      const devicebill = response.data;
       formik.setValues({
-        note: bill.note,
-        statusActive: bill.statusActive,
-        status: bill.status,
+       
+        statusActive: devicebill.statusActive,
+        status: devicebill.status,
       });
     } catch (error) {
       console.log(error);
@@ -45,15 +46,15 @@ const CheckStatusFire = () => {
 
   const formik = useFormik({
     initialValues: {
-      note: "",
+ 
       statusActive: "",
       status: 1,
     },
     validationSchema: Yup.object({
-      note: Yup.string(),
+    
       statusActive: Yup.number().oneOf([
-        IFireTransectionStatusActive.INACTIVE,
-        IFireTransectionStatusActive.ACTIVE
+        IDeviceStatusActive.INACTIVE,
+        IDeviceStatusActive.ACTIVE
       ]).required("Please select a status"),
     }),
     
@@ -61,12 +62,12 @@ const CheckStatusFire = () => {
       try {
         setIsSubmitting(true);
         
-        await axiosInstance.put(`/transection/${id}`, {
+        await axiosInstance.put(`/devicetransection/${id}`, {
           ...values,
           status: 1, 
         });
         alert("fireExtinguisher checked successfully!");
-        window.location.href = "/checkfireextingruisher/";
+        window.location.href = "/checkdevice/";
       } catch (error) {
         console.log(error);
       }
@@ -88,7 +89,7 @@ const CheckStatusFire = () => {
         >
           <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}></Avatar>
           <Typography component="h1" variant="h5">
-            ตรวจสอบสถานะถังดับเพลิง
+            สถานะชิ้นส่วนอุปกรณ์
           </Typography>
           <Box
             component="form"
@@ -97,41 +98,28 @@ const CheckStatusFire = () => {
             sx={{ mt: 3 }}
           >
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="given-name"
-                  name="note"
-                  required
-                  fullWidth
-                  id="note"
-                  label="หมายเหตุ"
-                  autoFocus
-                  onChange={formik.handleChange}
-                  value={formik.values.note}
-                  helperText={formik.errors.note}
-                  onBlur={formik.handleBlur}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
+             
+              <Grid item xs={12} sm={12}>
                 <Select
                   required
                   fullWidth
                   id="statusActive"
-                  label="สถานะถัง"
-                  name="statusActive" // Corrected
+                 
+                  name="statusActive" 
                   value={formik.values.statusActive}
                   onChange={(event) => {
                     const selectedValue = event.target.value;
-                    formik.setFieldValue("statusActive", selectedValue); // Corrected
+                    formik.setFieldValue("statusActive", selectedValue); 
                   }}
                   onBlur={formik.handleBlur}
                 >
-                  <MenuItem value={IFireTransectionStatusActive.INACTIVE}>
+                  <MenuItem value={IDeviceStatusActive.INACTIVE}>
                     ผิดปกติ
                   </MenuItem>
-                  <MenuItem value={IFireTransectionStatusActive.ACTIVE}>
+                  <MenuItem value={IDeviceStatusActive.ACTIVE}>
                     ปกติ
                   </MenuItem>
+
                 </Select>
               </Grid>
             </Grid>
@@ -142,7 +130,7 @@ const CheckStatusFire = () => {
               sx={{ mt: 3, mb: 2 }}
               disabled={isSubmitting}
             >
-              {isSubmitting ? "Submitting..." : "Edit"}
+              {isSubmitting ? "Submitting..." : "อัพเดต"}
             </Button>
           </Box>
         </Box>
@@ -151,4 +139,4 @@ const CheckStatusFire = () => {
   );
 };
 
-export default CheckStatusFire;
+export default CheckStatusDevice;

@@ -16,4 +16,4 @@ const MapFire = (_props: Props) => {
   );
 };
 
-export default MapFire;
+export default MapFire;   

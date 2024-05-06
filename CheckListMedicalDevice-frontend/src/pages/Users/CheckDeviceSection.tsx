@@ -17,21 +17,23 @@ import {
   SelectChangeEvent,
   Button,
 } from "@mui/material";
-import { IFireTransection } from "../../interfaces/fire_transection.interface";
 
 import { axiosInstance } from "../../axiosRequest";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { IDeviceTransection } from "../../interfaces/device_transection.interface";
 
-const CheckFireExtingruisher = () => {
-  const [billFires, setBillFires] = useState<IFireTransection[]>([]);
+const CheckDeviceSection = () => {
+  const [billDevices, setbillDevices] = useState<IDeviceTransection[]>([]);
   const [groupedTransections, setGroupedTransections] = useState<{
-    [date: string]: IFireTransection[];
+    [date: string]: IDeviceTransection[];
   }>({});
   const [openDropdown, setOpenDropdown] = useState(false);
   const [selectedDate, setSelectedDate] = useState("");
 
+  // const [totalDevices, setTotalDevices] = useState(0);
   const [page, setPage] = useState(0);
   const rowsPerPage = 10;
+  const { id } = useParams();
 
   const sortedDates = Object.keys(groupedTransections).sort((a, b) => {
     const dateA = new Date(a);
@@ -43,20 +45,16 @@ const CheckFireExtingruisher = () => {
     setSelectedDate(event.target.value);
     setOpenDropdown(false);
     handleGroupSelection(event.target.value);
-
-    const filteredBills = groupedTransections[event.target.value].filter(
-      (bill) => bill.status === 0
-    );
-    setBillFires(filteredBills);
   };
+
   const handleGroupSelection = (date: string) => {
-    setBillFires(groupedTransections[date]);
+    setbillDevices(groupedTransections[date]);
     setOpenDropdown(false);
   };
 
   useEffect(() => {
-    fetchFireTransection();
-  }, []);
+    fetchDeviceTransection();
+  }, [id]);
   const handleChangePage = (
     _event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number
@@ -71,15 +69,15 @@ const CheckFireExtingruisher = () => {
     }
   }, [groupedTransections]);
 
-  const fetchFireTransection = async () => {
+  const fetchDeviceTransection = async () => {
     try {
-      const response = await axiosInstance.get("/transection/");
-      const bills = response.data.items;
+      const response = await axiosInstance.get("/devicetransection/");
+      const devicebills = response.data.items;
 
-      const grouped = bills.reduce(
+      const grouped = devicebills.reduce(
         (
-          acc: { [date: string]: IFireTransection[] },
-          transection: IFireTransection
+          acc: { [date: string]: IDeviceTransection[] },
+          transection: IDeviceTransection
         ) => {
           const date = new Date(transection.createdAt);
           const dateTimeString = date.toLocaleString();
@@ -94,11 +92,11 @@ const CheckFireExtingruisher = () => {
 
       setGroupedTransections(grouped);
 
-      // Filter bills based on status
-      const filteredBills = bills.filter(
-        (bill: IFireTransection) => bill.status === 0
+      const filteredBills = devicebills.filter(
+        (devicebill: IDeviceTransection) => devicebill.status === 0
       );
-      setBillFires(filteredBills);
+
+      setbillDevices(filteredBills);
     } catch (error) {
       console.error(error);
     }
@@ -129,30 +127,38 @@ const CheckFireExtingruisher = () => {
         </Box>
 
         <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <Table aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell align="left">โค้ด</TableCell>
-                <TableCell align="center">ตำแหน่งที่อยู่</TableCell>
-                <TableCell align="center">Check</TableCell>
+                <TableCell>ไอดี</TableCell>
+                <TableCell>ชื่อชิ้นส่วน</TableCell>
+                <TableCell>ความสามารถ</TableCell>
+                <TableCell>สถานะ</TableCell>
+                <TableCell>Check</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {billFires.map((bill: IFireTransection) => (
-                <TableRow key={bill.code} component="th" scope="row">
-                  <TableCell align="left" component="th" scope="row">
-                    {bill.code}
+              {billDevices.map((bill: IDeviceTransection) => (
+                <TableRow key={bill.id} component="th" scope="row">
+                  <TableCell>{bill.id}</TableCell>
+                  <TableCell>{bill.sectionName}</TableCell>
+                  <TableCell>{bill.ability}</TableCell>
+                  <TableCell
+                    sx={{
+                      color: bill.statusActive === 0 ? "#ffb74d" : "green",
+                    }}
+                  >
+                    {bill.status === 0 ? "ยังไม่ได้เช็ค" : "เช็คแล้ว"}
                   </TableCell>
-                  <TableCell align="center" component="th" scope="row">
-                    {bill.location}
-                  </TableCell>
-                  <TableCell align="center">
-                    <Link to={`/checkstatusfire/${bill.id}`}>
-                      <Button variant="outlined" color="primary">
-                        Check
-                      </Button>
-                    </Link>
-                  </TableCell>
+                  {bill.status === 0 && (
+                    <TableCell>
+                      <Link to={`/checkstatusdevice/${bill.id}`}>
+                        <Button variant="outlined" color="primary">
+                          Check
+                        </Button>
+                      </Link>
+                    </TableCell>
+                  )}
                 </TableRow>
               ))}
             </TableBody>
@@ -161,7 +167,7 @@ const CheckFireExtingruisher = () => {
         <TablePagination
           rowsPerPageOptions={[10]}
           component="div"
-          count={billFires.length}
+          count={billDevices.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
@@ -171,4 +177,4 @@ const CheckFireExtingruisher = () => {
   );
 };
 
-export default CheckFireExtingruisher;
+export default CheckDeviceSection;

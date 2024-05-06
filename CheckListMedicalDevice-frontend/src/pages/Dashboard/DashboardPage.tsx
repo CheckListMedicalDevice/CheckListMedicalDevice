@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Container,
   FormControl,
   Grid,
@@ -31,6 +32,9 @@ import {
 import GetStatusDescription from "../../utils/GetStatusDescription";
 import getStatus from "../../utils/GetStatus";
 
+import { IDevice } from "../../interfaces/device.interface";
+import { Link } from "react-router-dom";
+
 
 type Props = {};
 
@@ -39,12 +43,24 @@ function DashboardPage({}: Props) {
 
   const [totalUsers, setTotalUsers] = useState(0);
   const [totalFires, setTotalFires] = useState(0);
+  const [totalDevices, setTotalDevices] = useState(0);
+
+
   const [billFires, setBillFires] = useState<IFireTransection[]>([]);
+  
+  const [listDevices, setListDevices] = useState<IDevice[]>([]);
+
+
+  
   const [groupedTransections, setGroupedTransections] = useState<{
     [date: string]: IFireTransection[];
   }>({});
+
+
   const [openDropdown, setOpenDropdown] = useState(false);
   const [selectedDate, setSelectedDate] = useState("");
+  
+
 
   // const [totalDevices, setTotalDevices] = useState(0);
   const [page, setPage] = useState(0);
@@ -55,6 +71,18 @@ function DashboardPage({}: Props) {
     setOpenDropdown(false);
     handleGroupSelection(event.target.value);
   };
+ 
+
+
+  const fetchListDevices = async () => {
+    try {
+      const response = await axiosInstance.get("/device");
+      const DeviceItems = response.data.items;
+      setListDevices(DeviceItems);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const fetchFireTransection = async () => {
     try {
@@ -82,11 +110,14 @@ function DashboardPage({}: Props) {
       console.error(error);
     }
   };
+  
 
   const handleGroupSelection = (date: string) => {
     setBillFires(groupedTransections[date]);
     setOpenDropdown(false);
   };
+
+
 
   const fetchFireData = async () => {
     try {
@@ -103,7 +134,7 @@ function DashboardPage({}: Props) {
     try {
       const response = await axiosInstance.get("/users/");
       const userItems = response.data.items;
-      console.log(response.data);
+  
 
       const totalUsers = userItems.length;
       setTotalUsers(totalUsers);
@@ -111,17 +142,34 @@ function DashboardPage({}: Props) {
       console.error("Error fetching fires:", error);
     }
   };
+  const fetchDeviceData = async () => {
+    try {
+      const response = await axiosInstance.get("/device/");
+      const deviceItems = response.data.items;
+   
+
+      const totalDevice = deviceItems.length;
+      setTotalDevices(totalDevice);
+    } catch (error) {
+      console.error("Error fetching fires:", error);
+    }
+  };
+
+
   useEffect(() => {
+    fetchListDevices();
     fetchFireTransection();
+
     fetchFireData();
     fetchUserData();
+    fetchDeviceData();
     setLoading(false);
   }, []);
 
   
 
   const handleChangePage = (
-    event: React.MouseEvent<HTMLButtonElement> | null,
+    _event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number
   ) => {
     setPage(newPage);
@@ -344,7 +392,7 @@ function DashboardPage({}: Props) {
                       py: 3,
                     }}
                   >
-                    99 เครื่อง
+                    {totalDevices} เครื่อง
                   </Box>
                 </Box>
               </Grid>
@@ -429,13 +477,14 @@ function DashboardPage({}: Props) {
                               style={{
                                 color:
                                   bill.statusActive ===
-                                  IFireTransectionStatusActive.INACTIVE
+                                  IFireTransectionStatusActive.INACTIVE 
                                     ? "#E74C3C"
                                     : bill.statusActive ===
-                                      IFireTransectionStatusActive.ACTIVE // Assuming EMPTY is a property of the enum
+                                      IFireTransectionStatusActive.ACTIVE 
                                     ? "#2ECC71" 
                                     : "#000000",
                               }}
+
                             >
                               {GetStatusDescription(bill.statusActive)}
                             </TableCell>
@@ -464,7 +513,18 @@ function DashboardPage({}: Props) {
                     onPageChange={handleChangePage}
                   />
                 </Box>
+              </Grid>
 
+              <Grid
+                item
+                xs={10}
+                lg={9.34}
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 1,
+                }}
+              >
                 <Box
                   sx={{
                     bgcolor: "#838996",
@@ -478,38 +538,57 @@ function DashboardPage({}: Props) {
                   Device
                 </Box>
                 <Box>
-                  {/* <TableContainer component={Paper}>
-                      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                        <TableHead>
-                          <TableRow>
-                            <TableCell>Dessert (100g serving)</TableCell>
-                            <TableCell align="right">Calories</TableCell>
-                            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-                            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-                            <TableCell align="right">Protein&nbsp;(g)</TableCell>
-                          </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          {rows.map((row) => (
-                            <TableRow
-                              key={row.name}
-                              sx={{
-                                "&:last-child td, &:last-child th": { border: 0 },
-                              }}
-                            >
-                              <TableCell component="th" scope="row">
-                                {row.name}
-                              </TableCell>
-                              <TableCell align="right">{row.calories}</TableCell>
-                              <TableCell align="right">{row.fat}</TableCell>
-                              <TableCell align="right">{row.carbs}</TableCell>
-                              <TableCell align="right">{row.protein}</TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </TableContainer> */}
+                <TableContainer component={Paper}>
+              <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>id</TableCell>
+                    <TableCell>ชื่ออุปกรณ์</TableCell>
+                    <TableCell align="right">ประเภท</TableCell>
+                    <TableCell align="right">ที่อยู่</TableCell>
+                    <TableCell align="right">โค้ดซีเรียล</TableCell>
+                
+                    <TableCell align="right">ชิ้นส่วน</TableCell>
+                    
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {listDevices
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((device) => (
+                      <TableRow key={device.id}>
+                        <TableCell>{device.id}</TableCell>
+                        <TableCell>{device.name}</TableCell>
+                        <TableCell align="right">{device.machineType}</TableCell>
+                        <TableCell align="right">{device.location}</TableCell>
+                        <TableCell align="right">{device.code}</TableCell>
+                       
+                        <TableCell align="right">
+                          <Link to={`/devicesectiondashboard/${device.id}`}>
+                            <Button variant="outlined" color="primary">
+                              ดูชิ้นส่วน
+                            </Button>
+                          </Link>
+                        </TableCell>
+                       
+                      </TableRow>
+                    ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+                  <TablePagination
+                    rowsPerPageOptions={[10]}
+                    component="div"
+                    count={billFires.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                  />
                 </Box>
+                
+                
+                
+               
               </Grid>
             </Grid>
           </Container>
@@ -520,3 +599,4 @@ function DashboardPage({}: Props) {
 }
 
 export default DashboardPage;
+

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import NavbarDashboard from "../../../components/NavDashboard";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -9,45 +9,45 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import { axiosInstance } from "../../../axiosRequest";
-import { IUser } from "../../../interfaces/user.interface";
+
 import { TablePagination, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 
+import { IDevice } from "../../../interfaces/device.interface";
 
-
-
-const UserPages = () => {
+const DevicePages = () => {
 
   const [page, setPage] = useState(0);
   const rowsPerPage = 10;
 
-  const [listUsers, setListUsers] = useState<IUser[]>([]);
+  const [listDevices, setListDevices] = useState<IDevice[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-  const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
+  const [selectedDeviceId, setSelectedDeviceId] = useState<number | null>(null);
 
-  const handleOpenDeleteDialog = (userId: number) => {
-    setSelectedUserId(userId);
+  const handleOpenDeleteDialog = (deviceId: number) => {
+    setSelectedDeviceId(deviceId);
     setOpenDeleteDialog(true);
   };
 
   const handleCloseDeleteDialog = () => {
     setOpenDeleteDialog(false);
-    setSelectedUserId(null);
+    setSelectedDeviceId(null);
   };
 
   const handleConfirmDelete = async () => {
-    if (selectedUserId !== null) {
+    if (selectedDeviceId !== null) {
       try {
-        await axiosInstance.delete(`/users/${selectedUserId}`);
-        fetchStoreData();
+        await axiosInstance.delete(`/device/${selectedDeviceId}`);
+        
+        fetchDeviceData();
         handleCloseDeleteDialog();
       } catch (error) {
         console.error("Error deleting user:", error);
@@ -55,17 +55,16 @@ const UserPages = () => {
     }
   };
 
- 
-
   useEffect(() => {
-    fetchStoreData();
-  }, []);
+    fetchDeviceData();
+  }, [listDevices]);
 
-  const fetchStoreData = async () => {
+  const fetchDeviceData = async () => {
     try {
-      const response = await axiosInstance.get("/users/");
-      const userItems = response.data.items;
-      setListUsers(userItems);
+      const response = await axiosInstance.get("/device/");
+      const DeviceItems = response.data.items;
+    
+      setListDevices(DeviceItems);
     } catch (error) {
       console.error("Error fetching users:", error);
     } finally {
@@ -92,50 +91,57 @@ const UserPages = () => {
                 <TableHead>
                   <TableRow>
                     <TableCell>id</TableCell>
-                    <TableCell>First Name</TableCell>
-                    <TableCell align="right">Last Name</TableCell>
-                    <TableCell align="right">Username</TableCell>
-                    <TableCell align="right">Address</TableCell>
-                    <TableCell align="right">PhoneNumber</TableCell>
-                    <TableCell align="right">Email</TableCell>
-                    <TableCell align="right">Edit</TableCell>
-                    <TableCell align="right">Delete</TableCell>
+                    <TableCell>ชื่ออุปกรณ์</TableCell>
+                    <TableCell>ประเภท</TableCell>
+
+                    <TableCell>ที่อยู่</TableCell>
+                    <TableCell>โค้ดซีเรียล</TableCell>
+                    <TableCell>โน้ต</TableCell>
+                    <TableCell>ชิ้นส่วน</TableCell>
+                    <TableCell>Edit</TableCell>
+                    <TableCell>Delete</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {(rowsPerPage > 0
-                    ? listUsers.slice(
+                    ? listDevices.slice(
                         page * rowsPerPage,
                         page * rowsPerPage + rowsPerPage
                       )
-                    : listUsers
-                  ).map((user) => (
-                    <TableRow key={user.id}>
+                    : listDevices
+                  ).map((device) => (
+                    <TableRow key={device.id}>
                       <TableCell component="th" scope="row">
-                        {user.id}
+                        {device.id}
                       </TableCell>
                       <TableCell component="th" scope="row">
-                        {user.firstName}
+                        {device.name}
                       </TableCell>
-                      <TableCell align="right">{user.lastName}</TableCell>
-                      <TableCell align="right">{user.username}</TableCell>
-                      <TableCell align="right">{user.address}</TableCell>
-                      <TableCell align="right">{user.phoneNumber}</TableCell>
-                      <TableCell align="right">{user.email}</TableCell>
-                      <TableCell align="right">
-                        <Link to={`/edituser/${user.id}`}>
+                      <TableCell>{device.machineType}</TableCell>
+                      <TableCell>{device.location}</TableCell>
+                      <TableCell>{device.code}</TableCell>
+                      <TableCell>{device.note}</TableCell>
+                      <TableCell>
+                      <Link to={`/devicesection/${device.id}`}>
+                        <Button variant="outlined" color="primary">
+                          ดูชิ้นส่วน
+                        </Button>
+                      </Link>
+                      </TableCell>
+                      <TableCell>
+                        <Link to={`/deviceedit/${device.id}`}>
                           <Button variant="outlined" color="primary">
-                            Edit
+                            แก้ไข
                           </Button>
                         </Link>
                       </TableCell>
-                      <TableCell align="right">
+                      <TableCell>
                         <Button
                           variant="outlined"
                           color="error"
-                          onClick={() => handleOpenDeleteDialog(user.id)}
+                          onClick={() => handleOpenDeleteDialog(device.id)}
                         >
-                          Delete
+                          ลบ
                         </Button>
                       </TableCell>
                     </TableRow>
@@ -146,7 +152,7 @@ const UserPages = () => {
             <TablePagination
               rowsPerPageOptions={[10]}
               component="div"
-              count={listUsers.length}
+              count={listDevices.length}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
@@ -154,9 +160,9 @@ const UserPages = () => {
           </>
         )}
 
-        <Link to="/register">
+        <Link to="/deviceadd">
           <Button variant="outlined" color="secondary">
-            สมัครสมาชิก
+            เพิ่มอุปกรณ์
           </Button>
         </Link>
       </NavbarDashboard>
@@ -167,10 +173,10 @@ const UserPages = () => {
         aria-labelledby="delete-dialog-title"
         aria-describedby="delete-dialog-description"
       >
-        <DialogTitle id="delete-dialog-title">Delete User</DialogTitle>
+        <DialogTitle id="delete-dialog-title">Delete Device</DialogTitle>
         <DialogContent>
           <DialogContentText id="delete-dialog-description">
-            Are you sure you want to delete this user?
+            แน่ใจหรือว่าต้องการลบ?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -186,4 +192,4 @@ const UserPages = () => {
   );
 };
 
-export default UserPages;
+export default DevicePages;

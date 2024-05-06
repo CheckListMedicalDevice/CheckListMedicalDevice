@@ -1,6 +1,8 @@
 import { useState, createContext, ReactNode, useEffect } from "react";
-import { IUser } from "../src/interfaces/user.interface";
-import { axiosInstance } from "../src/axiosRequest";
+import { IUser } from "../interfaces/user.interface";
+import { axiosInstance } from "../axiosRequest";
+
+
 
 interface AuthContextType {
   user: IUser | null;

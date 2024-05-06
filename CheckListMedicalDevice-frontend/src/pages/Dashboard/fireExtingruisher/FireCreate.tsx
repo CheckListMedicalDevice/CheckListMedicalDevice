@@ -8,10 +8,9 @@ import {
     Grid,
     Typography,
   } from "@mui/material";
-  import React, { useState } from "react";
+  import { useState } from "react";
   import NavbarDashboard from "../../../components/NavDashboard";
   import { axiosInstance } from "../../../axiosRequest";
-  import { IFire } from "../../../interfaces/fire.interface";
   import { useFormik } from "formik";
   import * as Yup from "yup";
   

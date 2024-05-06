@@ -1,120 +1,114 @@
+import React, {  useEffect, useState } from "react";
+import {
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Typography,
+  TablePagination
+} from "@mui/material";
+import { Link } from "react-router-dom";
+
+import { IDevice } from "../../interfaces/device.interface";
+import { axiosInstance } from "../../axiosRequest";
+
 import Navbar from "../../components/Navbar";
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import TextField from '@mui/material/TextField';
-import { Button } from "@mui/material";
-import { createTheme, ThemeProvider } from "@mui/material";
 
-const defaultTheme = createTheme({
-  palette: {
-    background: {
-      default: "#E7EFF8",
-    },
-  },
-  typography: {
-    fontFamily: ["-apple-system", "sans-serif"].join(","),
-  },
-});
+const CheckDevice = () => {
 
-function createData(
-  id: number,
-  code: string,
-  location: string,
-) {
-  return { id, code, location };
-}
+  const [page, setPage] = useState(0);
+  const rowsPerPage = 10;
 
-const rows = [
-  createData(1, 'ไม่รู้ A', 'A',),
-  createData(2, ' ไม่รู้ B', 'B',),
-  createData(3, ' ไม่รู้ C', 'C',),
-  createData(4, ' ไม่รู้ D', 'D',),
-  createData(5, ' ไม่รู้ E', 'E',),
-];
+  const [listDevices, setListDevices] = useState<IDevice[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
-export default function CheckDevice() {
-  const [status, setStatus] = React.useState('');
-  const handleChange = (event: SelectChangeEvent) => {
-    setStatus(event.target.value as string);
+  
+
+  const fetchDeviceData = async () => {
+    try {
+      const response = await axiosInstance.get("/device/");
+      const deviceItems = response.data.items;
+      setListDevices(deviceItems);
+    } catch (error) {
+      console.error("Error fetching devices:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
+  
+
+  useEffect(() => {
+    fetchDeviceData();
+  }, []);
+
+  const handleChangePage = (_event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
+    setPage(newPage);
   };
 
   return (
     <>
-      <ThemeProvider theme={defaultTheme}>
-        <Navbar>
-
-          <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell sx={{ textAlign: 'center' }}>ID</TableCell>
-                  <TableCell align="right" sx={{ textAlign: 'center' }}>Code</TableCell>
-                  <TableCell align="right" sx={{ textAlign: 'center' }}>Location</TableCell>
-                  <TableCell align="right" sx={{ textAlign: 'center' }}>Status</TableCell>
-                  <TableCell align="right" sx={{ textAlign: 'center' }}>หมายเหตุ</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {rows.map((row) => (
-                  <TableRow
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                  >
-                    <TableCell component="th" scope="row" sx={{ textAlign: 'center' }}>{row.id}</TableCell>
-                    <TableCell align="right" sx={{ textAlign: 'center' }}>{row.code}</TableCell>
-                    <TableCell align="right" sx={{ textAlign: 'center' }}>{row.location}</TableCell>
-
-                    <TableCell align="right" sx={{ textAlign: 'center' }}>
-                      <Box sx={{ minWidth: 120 }}>
-                        <FormControl sx={{ width: 250 }}>
-                          <InputLabel id="test">Status</InputLabel>
-                          <Select
-                            labelId="test"
-                            id="testt"
-                            value={status}
-                            label="สถานะ"
-                            onChange={handleChange}
-                          >
-                            <MenuItem value={10}>ยังอยู่ดี</MenuItem>
-                            <MenuItem value={20}>ปกติ</MenuItem>
-                            <MenuItem value={30}>ฉิบหายแล้ววว</MenuItem>
-                          </Select>
-                        </FormControl>
-                      </Box>
-                    </TableCell>
-
-                    <TableCell align="right" sx={{ textAlign: 'center' }} >
-                      <TextField
-                        id={`note-${row.id}`}
-                        label="หมายเหตุ"
-                        variant="outlined"
-                        fullWidth
-                        sx={{ maxWidth: '300px' }}
-                      />
-                    </TableCell>
-
+      <Navbar>
+        {loading ? (
+          <Typography>Loading...</Typography>
+        ) : (
+          <>
+            <TableContainer component={Paper}>
+              <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>id</TableCell>
+                    <TableCell>ชื่ออุปกรณ์</TableCell>
+                    <TableCell align="right">ประเภท</TableCell>
+                    <TableCell align="right">ที่อยู่</TableCell>
+                    <TableCell align="right">โค้ดซีเรียล</TableCell>
+                    <TableCell align="right">โน้ต</TableCell>
+                    <TableCell align="right">ชิ้นส่วน</TableCell>
+                    
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
-            <Button variant="outlined">
-              Submit
-            </Button>
-          </Box>
-        </Navbar>
-      </ThemeProvider>
+                </TableHead>
+                <TableBody>
+                  {listDevices
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((device) => (
+                      <TableRow key={device.id}>
+                        <TableCell>{device.id}</TableCell>
+                        <TableCell>{device.name}</TableCell>
+                        <TableCell align="right">{device.machineType}</TableCell>
+                        <TableCell align="right">{device.location}</TableCell>
+                        <TableCell align="right">{device.code}</TableCell>
+                        <TableCell align="right">{device.note}</TableCell>
+                        <TableCell align="right">
+                          <Link to={`/checkdevicesection/${device.id}`}>
+                            <Button variant="outlined" color="primary">
+                              ดูชิ้นส่วน
+                            </Button>
+                          </Link>
+                        </TableCell>
+                       
+                      </TableRow>
+                    ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <TablePagination
+              rowsPerPageOptions={[rowsPerPage]}
+              component="div"
+              count={listDevices.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+            />
+          </>
+        )}
+      </Navbar>
     </>
   );
 };
+
+export default CheckDevice;

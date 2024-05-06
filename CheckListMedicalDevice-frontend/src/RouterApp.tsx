@@ -3,7 +3,7 @@ import HomePages from "./pages/Users/HomePages";
 import Dashboard from "./pages/Dashboard/DashboardPage";
 import { useContext, useEffect, useState } from "react";
 import { Box } from "@mui/material";
-import DevicePage from "./pages/Dashboard/DevicePage";
+import DevicePages from "./pages/Dashboard/devices/DevicePages";
 
 import UserPages from "./pages/Dashboard/users/UserPages";
 import LoginPage from "./pages/LoginPage";
@@ -12,7 +12,7 @@ import UserEditPage from "./pages/Dashboard/users/UserEditPage";
 import FirePages from "./pages/Dashboard/fireExtingruisher/FirePages";
 import FireEditPage from "./pages/Dashboard/fireExtingruisher/FIreEditPage";
 import FireCreatePage from "./pages/Dashboard/fireExtingruisher/FireCreate";
-import { AuthContext } from "../contexts/AuthContext";
+
 import { roleAdmin } from "./interfaces/user.interface";
 
 
@@ -23,6 +23,15 @@ import StockTools from "./pages/Dashboard/stockItem/StockTools";
 import AddTools from "./pages/Dashboard/stockItem/AddTools";
 import EditTools from "./pages/Dashboard/stockItem/EditTools";
 import CheckStatusFire from "./pages/Users/CheckStatusFire";
+import { AuthContext } from "./contexts/AuthContext";
+import DeviceEdit from "./pages/Dashboard/devices/DeviceEdit";
+import DeviceAdd from "./pages/Dashboard/devices/DeviceAdd";
+import DeviceSection from "./pages/Dashboard/devices/DeviceSection";
+import DeviceSectionAdd from "./pages/Dashboard/devices/DeviceSectionAdd";
+import DeviceSectionEdit from "./pages/Dashboard/devices/DeviceSectionEdit";
+import CheckDeviceSection from "./pages/Users/CheckDeviceSection";
+import CheckStatusDevice from "./pages/Users/CheckStatusDevice";
+import CheckDeviceSection_Dashboard from "./pages/Dashboard/CheckDeviceSection_Dashboard";
 
 
 
@@ -71,15 +80,15 @@ const RouterApp = () => {
                   <Route path="/checkfireextingruisher" element={<CheckFireExtingruisher />} />
                   <Route path="/mapFire" element={<MapFire />} />
                   <Route path="/checkstatusfire/:id" element={<CheckStatusFire />} />
-                
-                
+                  <Route path="/checkdevicesection/:id" element={<CheckDeviceSection />} />
+                  <Route path="/checkstatusdevice/:id" element={<CheckStatusDevice />} />
 
                 </>
               )}
 
               {user.role === roleAdmin.admin ? (
                 <>
-                  <Route path="/device" element={<DevicePage />} />
+                  <Route path="/device" element={<DevicePages />} />
                   <Route path="/users" element={<UserPages />} />
                   <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="/register" element={<UserRegister />} />
@@ -90,6 +99,13 @@ const RouterApp = () => {
                   <Route path="/stocktools" element={<StockTools />} />
                   <Route path="/addtools" element={<AddTools />} />
                   <Route path="/edittools/:id" element={<EditTools />} />
+                  <Route path="/deviceedit/:id" element={<DeviceEdit />} />
+                  <Route path="/deviceadd" element={<DeviceAdd />} />
+                  <Route path="/devicesection/:id" element={<DeviceSection />} />
+                  <Route path="/devicesectionadd/:id" element={<DeviceSectionAdd />} />
+                  <Route path="/devicesectionedit/:id" element={<DeviceSectionEdit />} />
+                  <Route path="/devicesectiondashboard/:id" element={<CheckDeviceSection_Dashboard />} />
+                  
 
                   
                 </>

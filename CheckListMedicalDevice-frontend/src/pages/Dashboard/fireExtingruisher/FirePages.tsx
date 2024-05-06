@@ -52,14 +52,7 @@ const FirePages = () => {
     }
   };
 
-  const deleteFireExtinguisherById = async (id: number) => {
-    try {
-      await axiosInstance.delete(`/fireExtinguisher/${id}`);
-      fetchFireData();
-    } catch (error) {
-      console.error("Error deleting fireExtinguisher:", error);
-    }
-  };
+ 
 
   useEffect(() => {
     fetchFireData();
@@ -78,7 +71,7 @@ const FirePages = () => {
   };
 
   const handleChangePage = (
-    event: React.MouseEvent<HTMLButtonElement> | null,
+    _event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number
   ) => {
     setPage(newPage);

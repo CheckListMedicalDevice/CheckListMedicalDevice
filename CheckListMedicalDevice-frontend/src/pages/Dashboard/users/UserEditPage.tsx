@@ -7,15 +7,7 @@ import NavbarDashboard from "../../../components/NavDashboard";
 import { axiosInstance } from "../../../axiosRequest";
 import { Container, CssBaseline, Box, Avatar, Typography, Grid, TextField, Button } from "@mui/material";
 
-// interface FormValues {
-//   firstName: string;
-//   lastName: string;
-//   username: string;
-//   password: string;
-//   email: string;
-//   address: string;
-//   phoneNumber: string;
-// }
+
 
 const UserEditPage = () => {
   const { id } = useParams();
@@ -38,7 +30,7 @@ const UserEditPage = () => {
         email: user.email,
         address: user.address,
         phoneNumber: user.phoneNumber,
-        hashPassword:user.hashPassword ?? ""
+        hashPassword:user.password ?? ""
       });
     } catch (error) {
       console.log(error);

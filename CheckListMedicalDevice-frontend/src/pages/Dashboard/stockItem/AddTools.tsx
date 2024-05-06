@@ -14,6 +14,7 @@ import * as Yup from "yup";
 import CreateIcon from "@mui/icons-material/Create";
 import axios from "axios";
 import { axiosInstance } from "../../../axiosRequest";
+import NavbarDashboard from "../../../components/NavDashboard";
 
 interface IToolsForm {
   name: string;
@@ -62,7 +63,7 @@ const AddTools = () => {
 
   return (
     <>
-     
+     <NavbarDashboard>
         <Container component="main" maxWidth="xs">
           <CssBaseline />
           <Box
@@ -141,6 +142,7 @@ const AddTools = () => {
           </Box>
         </Container>
      
+    </NavbarDashboard>
     </>
   );
 };

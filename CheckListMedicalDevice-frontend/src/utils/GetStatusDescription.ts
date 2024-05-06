@@ -1,5 +1,6 @@
 import { IFireTransectionStatusActive } from "../interfaces/fire_transection.interface";
 
+
 export default function getStatusDescription(
     statusCode: IFireTransectionStatusActive
   ): string {
@@ -14,3 +15,4 @@ export default function getStatusDescription(
         return "UNKNOWN";
     }
   }
+
