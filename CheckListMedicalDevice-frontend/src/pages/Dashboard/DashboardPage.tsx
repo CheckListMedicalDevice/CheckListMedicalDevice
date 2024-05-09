@@ -448,10 +448,10 @@ function DashboardPage({}: Props) {
                       <TableHead>
                         <TableRow>
                           <TableCell>โค้ด</TableCell>
-                          <TableCell align="right">ตำแหน่งที่อยู่</TableCell>
-                          <TableCell align="right">หมายเหตุ</TableCell>
-                          <TableCell align="right">สถานะถัง</TableCell>
-                          <TableCell align="right">สถานะการดำเนิน</TableCell>
+                          <TableCell >ตำแหน่งที่อยู่</TableCell>
+                          <TableCell >หมายเหตุ</TableCell>
+                          <TableCell >สถานะถัง</TableCell>
+                          <TableCell >สถานะการดำเนิน</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
@@ -473,7 +473,7 @@ function DashboardPage({}: Props) {
                               {bill.note}
                             </TableCell>
                             <TableCell
-                              align="right"
+                           
                               style={{
                                 color:
                                   bill.statusActive ===
@@ -489,7 +489,7 @@ function DashboardPage({}: Props) {
                               {GetStatusDescription(bill.statusActive)}
                             </TableCell>
                             <TableCell
-                              align="right"
+                         
                               style={{
                                 color:
                                   bill.status === IFireTransectionStatus.WAITING
@@ -544,11 +544,11 @@ function DashboardPage({}: Props) {
                   <TableRow>
                     <TableCell>id</TableCell>
                     <TableCell>ชื่ออุปกรณ์</TableCell>
-                    <TableCell align="right">ประเภท</TableCell>
-                    <TableCell align="right">ที่อยู่</TableCell>
-                    <TableCell align="right">โค้ดซีเรียล</TableCell>
+                    <TableCell>ประเภท</TableCell>
+                    <TableCell >ที่อยู่</TableCell>
+                    <TableCell >โค้ดซีเรียล</TableCell>
                 
-                    <TableCell align="right">ชิ้นส่วน</TableCell>
+                    <TableCell>ชิ้นส่วน</TableCell>
                     
                   </TableRow>
                 </TableHead>
@@ -559,11 +559,11 @@ function DashboardPage({}: Props) {
                       <TableRow key={device.id}>
                         <TableCell>{device.id}</TableCell>
                         <TableCell>{device.name}</TableCell>
-                        <TableCell align="right">{device.machineType}</TableCell>
-                        <TableCell align="right">{device.location}</TableCell>
-                        <TableCell align="right">{device.code}</TableCell>
+                        <TableCell >{device.machineType}</TableCell>
+                        <TableCell >{device.location}</TableCell>
+                        <TableCell >{device.code}</TableCell>
                        
-                        <TableCell align="right">
+                        <TableCell >
                           <Link to={`/devicesectiondashboard/${device.id}`}>
                             <Button variant="outlined" color="primary">
                               ดูชิ้นส่วน

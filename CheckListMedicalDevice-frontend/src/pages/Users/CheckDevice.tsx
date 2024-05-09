@@ -11,12 +11,13 @@ import {
   Typography,
   TablePagination
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import { IDevice } from "../../interfaces/device.interface";
 import { axiosInstance } from "../../axiosRequest";
 
 import Navbar from "../../components/Navbar";
+import QRCode from "react-qr-code";
 
 const CheckDevice = () => {
 
@@ -25,6 +26,7 @@ const CheckDevice = () => {
 
   const [listDevices, setListDevices] = useState<IDevice[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const {id} = useParams();
 
   
 
@@ -64,11 +66,11 @@ const CheckDevice = () => {
                   <TableRow>
                     <TableCell>id</TableCell>
                     <TableCell>ชื่ออุปกรณ์</TableCell>
-                    <TableCell align="right">ประเภท</TableCell>
-                    <TableCell align="right">ที่อยู่</TableCell>
-                    <TableCell align="right">โค้ดซีเรียล</TableCell>
-                    <TableCell align="right">โน้ต</TableCell>
-                    <TableCell align="right">ชิ้นส่วน</TableCell>
+                    <TableCell >ประเภท</TableCell>
+                    <TableCell >ที่อยู่</TableCell>
+                    <TableCell >โค้ดซีเรียล</TableCell>
+                    <TableCell >โน้ต</TableCell>
+                    <TableCell >ชิ้นส่วน</TableCell>
                     
                   </TableRow>
                 </TableHead>
@@ -79,11 +81,11 @@ const CheckDevice = () => {
                       <TableRow key={device.id}>
                         <TableCell>{device.id}</TableCell>
                         <TableCell>{device.name}</TableCell>
-                        <TableCell align="right">{device.machineType}</TableCell>
-                        <TableCell align="right">{device.location}</TableCell>
-                        <TableCell align="right">{device.code}</TableCell>
-                        <TableCell align="right">{device.note}</TableCell>
-                        <TableCell align="right">
+                        <TableCell >{device.machineType}</TableCell>
+                        <TableCell >{device.location}</TableCell>
+                        <TableCell >{device.code}</TableCell>
+                        <TableCell >{device.note}</TableCell>
+                        <TableCell >
                           <Link to={`/checkdevicesection/${device.id}`}>
                             <Button variant="outlined" color="primary">
                               ดูชิ้นส่วน
@@ -104,6 +106,7 @@ const CheckDevice = () => {
               page={page}
               onPageChange={handleChangePage}
             />
+            
           </>
         )}
       </Navbar>

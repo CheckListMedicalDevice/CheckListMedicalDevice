@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useParams } from "react-router-dom";
+import QRCode from "react-qr-code"; // เพิ่ม QRCode ตรงนี้
 
 import {
   Container,
@@ -118,11 +119,11 @@ const CheckStatusFire = () => {
                   fullWidth
                   id="statusActive"
                   label="สถานะถัง"
-                  name="statusActive" // Corrected
+                  name="statusActive"
                   value={formik.values.statusActive}
                   onChange={(event) => {
                     const selectedValue = event.target.value;
-                    formik.setFieldValue("statusActive", selectedValue); // Corrected
+                    formik.setFieldValue("statusActive", selectedValue);
                   }}
                   onBlur={formik.handleBlur}
                 >
@@ -144,6 +145,9 @@ const CheckStatusFire = () => {
             >
               {isSubmitting ? "Submitting..." : "Edit"}
             </Button>
+           
+            <QRCode value={`https://udhsiuklk.com/checkfireextingruisher/${id}`} />
+          
           </Box>
         </Box>
       </Container>

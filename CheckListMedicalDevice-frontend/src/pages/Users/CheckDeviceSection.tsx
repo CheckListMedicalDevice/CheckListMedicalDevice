@@ -21,6 +21,7 @@ import {
 import { axiosInstance } from "../../axiosRequest";
 import { Link, useParams } from "react-router-dom";
 import { IDeviceTransection } from "../../interfaces/device_transection.interface";
+import QRCode from "react-qr-code";
 
 const CheckDeviceSection = () => {
   const [billDevices, setbillDevices] = useState<IDeviceTransection[]>([]);
@@ -172,6 +173,8 @@ const CheckDeviceSection = () => {
           page={page}
           onPageChange={handleChangePage}
         />
+
+<QRCode value={`/checkdevicesection/${id}`} />
       </Box>
     </Navbar>
   );
