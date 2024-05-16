@@ -30,7 +30,7 @@ app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 app.get("/", (req, res) => {
-    res.send("Hello");
+    res.send("api is ready!!!");
 });
 app.use("/users", user_route_1.default);
 app.use("/fireExtinguisher", fire_route_1.default);
@@ -49,7 +49,7 @@ app.use("/devicetransection", device_transection_1.default);
 //   }
 // );
 // cron.schedule(
-//   "*/5 * * * *",
+//   "*/2 * * * *",
 //   async() => {
 //     await fire_transectionController.generateFireTransections();
 //   },

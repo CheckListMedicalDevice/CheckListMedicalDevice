@@ -22,7 +22,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
-  res.send("Hello")
+  res.send("api is ready!!!");
 })
 
 
@@ -46,7 +46,7 @@ app.use("/devicetransection",devicetransectionRoutes)
 // );
 
 // cron.schedule(
-//   "*/5 * * * *",
+//   "*/2 * * * *",
 //   async() => {
 //     await fire_transectionController.generateFireTransections();
 //   },
