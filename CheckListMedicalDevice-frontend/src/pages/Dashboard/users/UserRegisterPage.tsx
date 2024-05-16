@@ -207,7 +207,7 @@ const UserRegister = () => {
                 sx={{ mt: 3, mb: 2 }}
                 disabled={isSubmitting}
               >
-                {isLoading ? "กำลังเพิ่ม..." : "เพิ่มอุปกรณ์"}
+                {isLoading ? "กำลังเพิ่ม..." : "เพิ่มผุ็ใช้งาน"}
               </Button>
             </Box>
           </Box>

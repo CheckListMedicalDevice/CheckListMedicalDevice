@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useParams } from "react-router-dom";
-import QRCode from "react-qr-code"; // เพิ่ม QRCode ตรงนี้
+import QRCode from "react-qr-code";
+import { toPng } from "html-to-image"; // Add this import
 
 import {
   Container,
@@ -23,6 +24,7 @@ import Navbar from "../../components/Navbar";
 
 const CheckStatusFire = () => {
   const { id } = useParams();
+  const qrRef = useRef(null); // Create a ref for the QR code element
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -74,6 +76,21 @@ const CheckStatusFire = () => {
       setIsSubmitting(false);
     },
   });
+
+  const downloadQRCode = () => {
+    if (qrRef.current) {
+      toPng(qrRef.current)
+        .then((dataUrl) => {
+          const link = document.createElement("a");
+          link.download = "qrcode.png";
+          link.href = dataUrl;
+          link.click();
+        })
+        .catch((error) => {
+          console.error("Could not generate QR code", error);
+        });
+    }
+  };
 
   return (
     <Navbar>
@@ -145,9 +162,18 @@ const CheckStatusFire = () => {
             >
               {isSubmitting ? "Submitting..." : "Edit"}
             </Button>
-           
-            <QRCode value={`https://udhsiuklk.com/checkfireextingruisher/${id}`} />
-          
+
+            <div ref={qrRef}>
+              <QRCode value={`https://udhsiuklk.com/checkfireextingruisher/${id}`} />
+            </div>
+            <Button
+              fullWidth
+              variant="contained"
+              sx={{ mt: 2 }}
+              onClick={downloadQRCode}
+            >
+              Download QR Code
+            </Button>
           </Box>
         </Box>
       </Container>

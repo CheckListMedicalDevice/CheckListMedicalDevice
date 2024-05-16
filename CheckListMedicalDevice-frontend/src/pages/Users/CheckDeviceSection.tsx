@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Navbar from "../../components/Navbar";
 import {
   Box,
@@ -17,11 +17,11 @@ import {
   SelectChangeEvent,
   Button,
 } from "@mui/material";
-
 import { axiosInstance } from "../../axiosRequest";
 import { Link, useParams } from "react-router-dom";
 import { IDeviceTransection } from "../../interfaces/device_transection.interface";
 import QRCode from "react-qr-code";
+import { toPng } from "html-to-image"; // Add this import
 
 const CheckDeviceSection = () => {
   const [billDevices, setbillDevices] = useState<IDeviceTransection[]>([]);
@@ -35,6 +35,7 @@ const CheckDeviceSection = () => {
   const [page, setPage] = useState(0);
   const rowsPerPage = 10;
   const { id } = useParams();
+  const qrRef = useRef(null); // Create a ref for the QR code element
 
   const sortedDates = Object.keys(groupedTransections).sort((a, b) => {
     const dateA = new Date(a);
@@ -56,6 +57,7 @@ const CheckDeviceSection = () => {
   useEffect(() => {
     fetchDeviceTransection();
   }, [id]);
+
   const handleChangePage = (
     _event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number
@@ -100,6 +102,21 @@ const CheckDeviceSection = () => {
       setbillDevices(filteredBills);
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  const downloadQRCode = () => {
+    if (qrRef.current) {
+      toPng(qrRef.current)
+        .then((dataUrl) => {
+          const link = document.createElement("a");
+          link.download = "qrcode.png";
+          link.href = dataUrl;
+          link.click();
+        })
+        .catch((error) => {
+          console.error("Could not generate QR code", error);
+        });
     }
   };
 
@@ -174,7 +191,21 @@ const CheckDeviceSection = () => {
           onPageChange={handleChangePage}
         />
 
-<QRCode value={`/checkdevicesection/${id}`} />
+        <Box ref={qrRef} sx={{
+          display: 'flex',
+        
+        }}>
+          <QRCode value={`/checkdevicesection/${id}`} />
+        
+        <Button
+          
+          variant="contained"
+          sx={{ mt: 2,  width: 250, height: 40 }}
+          onClick={downloadQRCode}
+        >
+          Download QR Code
+        </Button>
+        </Box>
       </Box>
     </Navbar>
   );

@@ -49,7 +49,7 @@ const AddTools = () => {
         alert(" เพิ่มอุปกรณ์สำเร็จแล้ว!");
         
         setIsSubmitting(true);
-        window.location.href = `/dashboard/`;
+        window.location.href = `/stocktools/`;
       } catch (e: any) {
         if (axios.isAxiosError(e)) {
           alert(e?.response?.data.message);
