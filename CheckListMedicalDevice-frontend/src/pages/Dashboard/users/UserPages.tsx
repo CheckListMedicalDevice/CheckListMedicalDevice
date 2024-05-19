@@ -98,6 +98,8 @@ const UserPages = () => {
                     <TableCell align="right">Address</TableCell>
                     <TableCell align="right">PhoneNumber</TableCell>
                     <TableCell align="right">Email</TableCell>
+                    <TableCell align="right">Role</TableCell>
+                    
                     <TableCell align="right">Edit</TableCell>
                     <TableCell align="right">Delete</TableCell>
                   </TableRow>
@@ -122,6 +124,7 @@ const UserPages = () => {
                       <TableCell align="right">{user.address}</TableCell>
                       <TableCell align="right">{user.phoneNumber}</TableCell>
                       <TableCell align="right">{user.email}</TableCell>
+                      <TableCell align="right">{user.role}</TableCell>
                       <TableCell align="right">
                         <Link to={`/edituser/${user.id}`}>
                           <Button variant="outlined" color="primary">

@@ -1,21 +1,29 @@
 import { useEffect, useState } from "react";
-import {  useFormik } from "formik";
+import { useFormik } from "formik";
 import * as Yup from "yup";
-import {  useParams } from 'react-router-dom';
-import { IUser } from "../../../interfaces/user.interface";
+import { useParams } from "react-router-dom";
+import { IUser, roleAdmin } from "../../../interfaces/user.interface";
 import NavbarDashboard from "../../../components/NavDashboard";
 import { axiosInstance } from "../../../axiosRequest";
-import { Container, CssBaseline, Box, Avatar, Typography, Grid, TextField, Button } from "@mui/material";
-
-
+import {
+  Container,
+  CssBaseline,
+  Box,
+  Avatar,
+  Typography,
+  Grid,
+  TextField,
+  Button,
+  Select,
+  MenuItem,
+} from "@mui/material";
 
 const UserEditPage = () => {
   const { id } = useParams();
-  
+
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    
     fetchUserData();
   }, [id]);
 
@@ -25,28 +33,29 @@ const UserEditPage = () => {
       const user = response.data[0];
       formik.setValues({
         firstName: user.firstName,
+        role: user.role,
         lastName: user.lastName,
         username: user.username,
         email: user.email,
         address: user.address,
         phoneNumber: user.phoneNumber,
-        hashPassword:user.password ?? ""
+        hashPassword: user.password ?? "",
       });
     } catch (error) {
       console.log(error);
     }
-    
   };
 
   const formik = useFormik({
     initialValues: {
       firstName: "",
-      lastName:  "",
-      username:  "",
+      lastName: "",
+      username: "",
       hashPassword: "",
-      email:  "",
-      address:  "",
+      email: "",
+      address: "",
       phoneNumber: "",
+      role: roleAdmin.user,
     },
     validationSchema: Yup.object({
       firstName: Yup.string(),
@@ -56,14 +65,15 @@ const UserEditPage = () => {
       email: Yup.string().email("Invalid email address"),
       address: Yup.string(),
       phoneNumber: Yup.string(),
+      role: Yup.string(),
     }),
     onSubmit: async (values) => {
       try {
         setIsSubmitting(true);
         await axiosInstance.put(`/users/${id}`, values);
-     
+
         alert("User updated successfully!");
-    
+
         window.location.href = `/users/`;
       } catch (error) {
         console.log(error);
@@ -74,161 +84,156 @@ const UserEditPage = () => {
 
   return (
     <NavbarDashboard>
-       <Container component="main" maxWidth="xs">
-          <CssBaseline />
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}></Avatar>
+          <Typography component="h1" variant="h5">
+            Edit
+          </Typography>
           <Box
-            sx={{
-              marginTop: 8,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
+            component="form"
+            noValidate
+            onSubmit={formik.handleSubmit}
+            sx={{ mt: 3 }}
           >
-            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}></Avatar>
-            <Typography component="h1" variant="h5">
-              Edit
-            </Typography>
-            <Box
-              component="form"
-              noValidate
-              onSubmit={formik.handleSubmit}
-              sx={{ mt: 3 }}
-            >
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    autoComplete="given-name"
-                    name="firstName"
-                    required
-                    fullWidth
-                    id="firstName"
-                    label="First Name"
-                    autoFocus
-                    onChange={formik.handleChange}
-                    value={formik.values.firstName}
-                    
-                    helperText={formik.errors.firstName}
-                    onBlur={formik.handleBlur}
-                    disabled={isSubmitting}
-
-
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="lastName"
-                    label="Last Name"
-                    name="lastName"
-                    autoComplete="family-name"
-                    onChange={formik.handleChange}
-                    value={formik.values.lastName}
-                 
-                    helperText={formik.errors.lastName}
-                    onBlur={formik.handleBlur}
-                    
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="username"
-                    label="username"
-                    name="username"
-                    autoComplete="username"
-                    onChange={formik.handleChange}
-                    value={formik.values.username}
-                    
-                    helperText={formik.errors.username}
-                    onBlur={formik.handleBlur}
-                    
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    name="password"
-                    label="Password"
-                    type="password"
-                    id="password"
-                    autoComplete="new-password"
-                    onChange={formik.handleChange}
-                    value={formik.values.hashPassword}
-                    helperText={formik.errors.hashPassword}
-                    
-                    onBlur={formik.handleBlur}
-                    
-
-                    
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="email"
-                    label="Email Address"
-                    name="email"
-                    autoComplete="email"
-                    onChange={formik.handleChange}
-                    value={formik.values.email}
-                    helperText={formik.errors.email}
-                    
-                    onBlur={formik.handleBlur}
-                   
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="address"
-                    label="Address"
-                    name="address"
-                    autoComplete="address"
-                    onChange={formik.handleChange}
-                    value={formik.values.address}
-                    helperText={formik.errors.address}
-                    
-                    onBlur={formik.handleBlur}
-                   
-
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="phoneNumber"
-                    label="phoneNumber"
-                    name="phoneNumber"
-                    autoComplete="phoneNumber"
-                    onChange={formik.handleChange}
-                    value={formik.values.phoneNumber}
-                    helperText={formik.errors.phoneNumber}
-                    
-                    onBlur={formik.handleBlur}
-                    
-
-                  />
-                </Grid>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  autoComplete="given-name"
+                  name="firstName"
+                  required
+                  fullWidth
+                  id="firstName"
+                  label="First Name"
+                  autoFocus
+                  onChange={formik.handleChange}
+                  value={formik.values.firstName}
+                  helperText={formik.errors.firstName}
+                  onBlur={formik.handleBlur}
+                  disabled={isSubmitting}
+                />
               </Grid>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-                disabled={isSubmitting}
-              >
-                Edit
-              </Button>
-            </Box>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  id="lastName"
+                  label="Last Name"
+                  name="lastName"
+                  autoComplete="family-name"
+                  onChange={formik.handleChange}
+                  value={formik.values.lastName}
+                  helperText={formik.errors.lastName}
+                  onBlur={formik.handleBlur}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="username"
+                  label="username"
+                  name="username"
+                  autoComplete="username"
+                  onChange={formik.handleChange}
+                  value={formik.values.username}
+                  helperText={formik.errors.username}
+                  onBlur={formik.handleBlur}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="new-password"
+                  onChange={formik.handleChange}
+                  value={formik.values.hashPassword}
+                  helperText={formik.errors.hashPassword}
+                  onBlur={formik.handleBlur}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                  onChange={formik.handleChange}
+                  value={formik.values.email}
+                  helperText={formik.errors.email}
+                  onBlur={formik.handleBlur}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="address"
+                  label="Address"
+                  name="address"
+                  autoComplete="address"
+                  onChange={formik.handleChange}
+                  value={formik.values.address}
+                  helperText={formik.errors.address}
+                  onBlur={formik.handleBlur}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="phoneNumber"
+                  label="phoneNumber"
+                  name="phoneNumber"
+                  autoComplete="phoneNumber"
+                  onChange={formik.handleChange}
+                  value={formik.values.phoneNumber}
+                  helperText={formik.errors.phoneNumber}
+                  onBlur={formik.handleBlur}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Select
+                  labelId="role-label"
+                  id="role"
+                  name="role"
+                  value={formik.values.role}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  label="Role"
+                  autoComplete="role"
+                >
+                  <MenuItem value="user">User</MenuItem>
+                  <MenuItem value="admin">Admin</MenuItem>
+                </Select>
+              </Grid>
+            </Grid>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              disabled={isSubmitting}
+            >
+              Edit
+            </Button>
           </Box>
-        </Container>
-      
+        </Box>
+      </Container>
     </NavbarDashboard>
   );
 };

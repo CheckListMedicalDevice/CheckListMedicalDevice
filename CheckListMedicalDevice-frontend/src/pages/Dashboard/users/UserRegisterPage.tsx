@@ -7,6 +7,7 @@ import {
   CssBaseline,
   Grid,
   Typography,
+  
 
 } from "@mui/material";
 import  { useState } from "react";
@@ -18,7 +19,7 @@ import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { IUser } from "../../../interfaces/user.interface";
+import { IUser, roleAdmin } from "../../../interfaces/user.interface";
 
 const validationSchema = Yup.object({
   firstName: Yup.string().required("กรุณากรอกชื่อ"),
@@ -43,6 +44,7 @@ const UserRegister = () => {
       password: "",
       email: "",
       address: "",
+      role: roleAdmin.user,
     }as IUser, 
     validationSchema: validationSchema,
     onSubmit: async (values: IUser) => {
@@ -56,6 +58,7 @@ const UserRegister = () => {
           email: values.email,
           address: values.address,
           phoneNumber: values.phoneNumber,
+          role: values.role,
         });
         alert(" เพิ่มอุปกรณ์สำเร็จแล้ว!");
 
@@ -198,6 +201,7 @@ const UserRegister = () => {
                     helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
                   />
                 </Grid>
+              
                 
               </Grid>
               <Button
@@ -207,7 +211,7 @@ const UserRegister = () => {
                 sx={{ mt: 3, mb: 2 }}
                 disabled={isSubmitting}
               >
-                {isLoading ? "กำลังเพิ่ม..." : "เพิ่มผุ็ใช้งาน"}
+                {isLoading ? "กำลังเพิ่ม..." : "เพิ่มผู้ใช้งาน"}
               </Button>
             </Box>
           </Box>
