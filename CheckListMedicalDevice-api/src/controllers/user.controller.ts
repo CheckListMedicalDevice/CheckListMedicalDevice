@@ -193,7 +193,7 @@ const getUserById = async (req: RequestAndUser, res: Response) => {
 const updateUser = async (req: RequestAndUser, res: Response) => {
   try {
     const { id } = req.params;
-    const { firstName, lastName, email, address, phoneNumber,username,password } = req.body;
+    const { firstName, lastName, email, address, phoneNumber,username,password,role } = req.body;
     const updateUser: any = await User.update(
       {
         username,
@@ -203,6 +203,7 @@ const updateUser = async (req: RequestAndUser, res: Response) => {
         email,
         address,
         phoneNumber,
+        role
       },
       {
         where: {

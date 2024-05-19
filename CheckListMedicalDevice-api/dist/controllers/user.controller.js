@@ -144,7 +144,7 @@ const getUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const { firstName, lastName, email, address, phoneNumber, username, password } = req.body;
+        const { firstName, lastName, email, address, phoneNumber, username, password, role } = req.body;
         const updateUser = yield user_model_1.User.update({
             username,
             password,
@@ -153,6 +153,7 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             email,
             address,
             phoneNumber,
+            role
         }, {
             where: {
                 id,
